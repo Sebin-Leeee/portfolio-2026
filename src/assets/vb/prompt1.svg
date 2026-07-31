@@ -1,0 +1,42 @@
+<svg viewBox="0 0 1100 640" xmlns="http://www.w3.org/2000/svg" font-family="'SF Mono','Menlo','Consolas',monospace">
+  <rect width="1100" height="640" fill="#0D0D0D"/>
+  <rect x="40" y="40" width="1020" height="560" rx="12" fill="#000000" stroke="#2A2A2A" stroke-width="1"/>
+  <rect x="40" y="40" width="1020" height="38" rx="12" fill="#151515"/>
+  <rect x="40" y="66" width="1020" height="12" fill="#151515"/>
+  <circle cx="66" cy="59" r="6" fill="#FF5F57"/>
+  <circle cx="86" cy="59" r="6" fill="#FEBC2E"/>
+  <circle cx="106" cy="59" r="6" fill="#28C840"/>
+  <text x="550" y="63" font-size="12" fill="#8A8A8A" text-anchor="middle" font-family="Helvetica, Arial, sans-serif">claude — vancouver-balloons</text>
+
+  <text x="70.0" y="115" font-size="14" fill="#E8873A" textLength="8.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">></text>
+  <text x="90.0" y="115" font-size="14" fill="#FFFFFF" textLength="301.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">In RoundArchSVG, add a prop called </text>
+  <text x="391.0" y="115" font-size="14" fill="#E8BF5E" textLength="68.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">archSize</text>
+  <text x="459.8" y="115" font-size="14" fill="#FFFFFF" textLength="163.4" lengthAdjust="spacingAndGlyphs" xml:space="preserve"> (string). Based on</text>
+  <text x="90.0" y="139" font-size="14" fill="#FFFFFF" textLength="481.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">archSize, change the SVG viewBox to control how wide and</text>
+  <text x="90.0" y="163" font-size="14" fill="#FFFFFF" textLength="189.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">tall the arch appears:</text>
+  <text x="90.0" y="195" font-size="14" fill="#9A9A9A" textLength="395.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">- "Skinny Door Arch": viewBox="150 10 310 500"</text>
+  <text x="90.0" y="217" font-size="14" fill="#9A9A9A" textLength="404.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">- "Supreme Full Arch": viewBox="20 -30 660 560"</text>
+  <text x="90.0" y="239" font-size="14" fill="#9A9A9A" textLength="498.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">- "Standard Full Arch" or default: viewBox="80 10 540 500"</text>
+  <text x="70.0" y="418" font-size="14" fill="#E8873A" textLength="8.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">></text>
+  <text x="90.0" y="418" font-size="14" fill="#FFFFFF" textLength="77.4" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Pass the </text>
+  <text x="167.4" y="418" font-size="14" fill="#E8BF5E" textLength="68.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">archSize</text>
+  <text x="236.2" y="418" font-size="14" fill="#FFFFFF" textLength="344.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve"> prop to RoundArchSVG from Step3Size.jsx</text>
+  <text x="90.0" y="442" font-size="14" fill="#FFFFFF" textLength="490.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">and all steps that show the arch preview (steps 4, 5, 6).</text>
+  <text x="90.0" y="466" font-size="14" fill="#FFFFFF" textLength="68.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Use the </text>
+  <text x="158.8" y="466" font-size="14" fill="#E8BF5E" textLength="103.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">selectedSize</text>
+  <text x="262.0" y="466" font-size="14" fill="#FFFFFF" textLength="335.4" lengthAdjust="spacingAndGlyphs" xml:space="preserve"> state value as the archSize prop. Make</text>
+  <text x="90.0" y="490" font-size="14" fill="#FFFFFF" textLength="438.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">sure it updates immediately when the user selects a</text>
+  <text x="90.0" y="514" font-size="14" fill="#FFFFFF" textLength="215.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">different size on step 3.</text>
+
+  <rect x="70" y="260" width="940" height="86" rx="8" fill="#111111" stroke="#262626" stroke-width="1"/>
+  <text x="90" y="285" font-size="12" fill="#28C840" font-family="Helvetica, Arial, sans-serif">● Update(src/components/RoundArchSVG.jsx)</text>
+  <text x="90" y="307" font-size="13" fill="#7A7A7A">Added archSize prop, 3 viewBox cases mapped</text>
+  <text x="90" y="329" font-size="13" fill="#7A7A7A">Done. archSize now controls arch dimensions on render.</text>
+
+  <line x1="70" y1="380" x2="1010" y2="380" stroke="#222222" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="540" y="376" font-size="11" fill="#5A5A5A" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">WAIT -&gt; REVIEW OUTPUT -&gt; CONTINUE</text>
+
+  <rect x="70" y="535" width="940" height="60" rx="8" fill="#111111" stroke="#262626" stroke-width="1"/>
+  <text x="90" y="558" font-size="12" fill="#28C840" font-family="Helvetica, Arial, sans-serif">● Update(4 files) — Steps 3-6 wired to archSize</text>
+  <text x="90" y="580" font-size="13" fill="#7A7A7A">Done. Preview resizes immediately on size change.</text>
+</svg>

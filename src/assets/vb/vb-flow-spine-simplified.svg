@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1500 780" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1500" height="780" fill="#FDFAF6"/>
+
+  <text x="60" y="55" font-size="24" font-weight="700" fill="#3A2E1F">Vancouver Balloons — Product Flow (simplified)</text>
+  <text x="60" y="80" font-size="13" fill="#8A7A5C">Top-level spine, redrawn from the full system map — click to view full resolution</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#B9A98A"/>
+    </marker>
+  </defs>
+
+  <!-- Entry -->
+  <rect x="60" y="150" width="190" height="70" rx="14" fill="#3A2E1F"/>
+  <text x="155" y="180" font-size="12" fill="#E8BF5E" text-anchor="middle" opacity="0.9">START</text>
+  <text x="155" y="201" font-size="14.5" fill="#FDFAF6" text-anchor="middle" font-weight="600">Organic / Helium / Hybrid</text>
+
+  <!-- three balloon-type branches -->
+  <path d="M250 185 H300" stroke="#B9A98A" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M250 185 V330 H300" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M250 185 V480 H300" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <g font-size="14">
+    <rect x="300" y="150" width="170" height="70" rx="14" fill="#CAA352"/>
+    <text x="385" y="180" font-size="12" fill="#FDFAF6" text-anchor="middle" opacity="0.85">AIR-FILLED</text>
+    <text x="385" y="201" font-size="14" fill="#FDFAF6" text-anchor="middle" font-weight="600">Wall · Arch · Column · Garland</text>
+
+    <rect x="300" y="300" width="170" height="70" rx="14" fill="#CAA352"/>
+    <text x="385" y="330" font-size="12" fill="#FDFAF6" text-anchor="middle" opacity="0.85">HELIUM</text>
+    <text x="385" y="351" font-size="14" fill="#FDFAF6" text-anchor="middle" font-weight="600">Arch · Wall · Backdrop</text>
+
+    <rect x="300" y="450" width="170" height="70" rx="14" fill="#CAA352"/>
+    <text x="385" y="480" font-size="12" fill="#FDFAF6" text-anchor="middle" opacity="0.85">HYBRID</text>
+    <text x="385" y="501" font-size="14" fill="#FDFAF6" text-anchor="middle" font-weight="600">Top + bottom balloon mix</text>
+  </g>
+
+  <!-- frame/structure selection -->
+  <path d="M470 185 H530" stroke="#B9A98A" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M470 335 H530" stroke="#B9A98A" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M470 485 H530" stroke="#B9A98A" stroke-width="2" marker-end="url(#a)"/>
+
+  <g font-size="13.5">
+    <rect x="530" y="150" width="190" height="70" rx="14" fill="#E8BF5E"/>
+    <text x="625" y="180" font-size="11.5" fill="#3A2E1F" text-anchor="middle" opacity="0.8">FRAME SIZE + STRUCTURE</text>
+    <text x="625" y="201" font-size="13.5" fill="#3A2E1F" text-anchor="middle" font-weight="600">Organic or Structured</text>
+
+    <rect x="530" y="300" width="190" height="70" rx="14" fill="#E8BF5E"/>
+    <text x="625" y="330" font-size="11.5" fill="#3A2E1F" text-anchor="middle" opacity="0.8">FRAME + FULL/HALF</text>
+    <text x="625" y="351" font-size="13.5" fill="#3A2E1F" text-anchor="middle" font-weight="600">Structure Selection</text>
+
+    <rect x="530" y="450" width="190" height="70" rx="14" fill="#E8BF5E"/>
+    <text x="625" y="480" font-size="11.5" fill="#3A2E1F" text-anchor="middle" opacity="0.8">SELECT SIZE</text>
+    <text x="625" y="501" font-size="13.5" fill="#3A2E1F" text-anchor="middle" font-weight="600">Top-balloon count</text>
+  </g>
+
+  <!-- converge to color structure -->
+  <path d="M720 185 V270 H900 V320" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M720 335 H900 V335" stroke="#B9A98A" stroke-width="2" fill="none"/>
+  <path d="M900 320 V370" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M720 485 V420 H900 V370" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <g font-size="13.5">
+    <rect x="900" y="300" width="210" height="80" rx="14" fill="#CAA352"/>
+    <text x="1005" y="328" font-size="11.5" fill="#FDFAF6" text-anchor="middle" opacity="0.85">COLOR STRUCTURE</text>
+    <text x="1005" y="349" font-size="13.5" fill="#FDFAF6" text-anchor="middle" font-weight="600">Solid · Spiral</text>
+    <text x="1005" y="367" font-size="13.5" fill="#FDFAF6" text-anchor="middle" font-weight="600">Color Block · Random</text>
+  </g>
+
+  <!-- number of colors + choose colors -->
+  <path d="M1110 340 H1170" stroke="#B9A98A" stroke-width="2" marker-end="url(#a)"/>
+  <g font-size="13">
+    <rect x="1170" y="305" width="160" height="70" rx="14" fill="#E8BF5E"/>
+    <text x="1250" y="335" font-size="11" fill="#3A2E1F" text-anchor="middle" opacity="0.8">NUMBER OF COLORS</text>
+    <text x="1250" y="355" font-size="13" fill="#3A2E1F" text-anchor="middle" font-weight="600">2 – 5</text>
+  </g>
+
+  <path d="M1005 380 V560 H1250 V560" stroke="#B9A98A" stroke-width="2" fill="none"/>
+  <path d="M1250 375 V430" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <g font-size="13">
+    <rect x="1170" y="430" width="160" height="70" rx="14" fill="#3A2E1F"/>
+    <text x="1250" y="460" font-size="11" fill="#E8BF5E" text-anchor="middle" opacity="0.9">CHOOSE COLORS</text>
+    <text x="1250" y="480" font-size="13" fill="#FDFAF6" text-anchor="middle" font-weight="600">Live arch preview</text>
+  </g>
+
+  <!-- final steps -->
+  <path d="M1250 500 V600 H700 V600" stroke="#B9A98A" stroke-width="2" fill="none"/>
+  <path d="M700 600 H620" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <g font-size="13">
+    <rect x="380" y="565" width="230" height="70" rx="14" fill="#E8BF5E"/>
+    <text x="495" y="593" font-size="11" fill="#3A2E1F" text-anchor="middle" opacity="0.8">FINAL DESIGN + ESTIMATE</text>
+    <text x="495" y="614" font-size="13" fill="#3A2E1F" text-anchor="middle" font-weight="600">Priced summary shown</text>
+  </g>
+
+  <path d="M380 600 H320" stroke="#B9A98A" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <g font-size="13">
+    <rect x="80" y="565" width="230" height="70" rx="14" fill="#3A2E1F"/>
+    <text x="195" y="593" font-size="11" fill="#E8BF5E" text-anchor="middle" opacity="0.9">CLIENT INFO — EMAIL GATE</text>
+    <text x="195" y="614" font-size="13" fill="#FDFAF6" text-anchor="middle" font-weight="600">Final details + contact</text>
+  </g>
+
+  <text x="60" y="710" font-size="12.5" fill="#8A7A5C" font-style="italic">Simplified from the full system map — every arch type, frame size, and structure variant lives in the full version.</text>
+</svg>

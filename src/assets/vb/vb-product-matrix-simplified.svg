@@ -1,0 +1,70 @@
+<svg viewBox="0 0 1300 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1300" height="620" fill="#FDFAF6"/>
+
+  <text x="60" y="55" font-size="24" font-weight="700" fill="#3A2E1F">The real scope behind "choose your arch"</text>
+  <text x="60" y="80" font-size="13" fill="#8A7A5C">Condensed from the full product matrix — every shape maps to a defined size and price range</text>
+
+  <!-- table header -->
+  <g font-size="13" font-weight="700" fill="#FDFAF6">
+    <rect x="60" y="115" width="1180" height="40" rx="8" fill="#3A2E1F"/>
+    <text x="90" y="140">Structure</text>
+    <text x="330" y="140">Category</text>
+    <text x="570" y="140">Size options</text>
+    <text x="950" y="140">Notes</text>
+  </g>
+
+  <!-- rows -->
+  <g font-size="13" fill="#3A2E1F">
+    <rect x="60" y="155" width="1180" height="52" fill="#FFFFFF"/>
+    <text x="90" y="186" font-weight="600">Round Arch</text>
+    <text x="330" y="186" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="186" fill="#5C4E38">Skinny Door · Supreme Full · Standard Full</text>
+    <text x="950" y="186" fill="#8A7A5C">Skinny: 3×11ft</text>
+
+    <rect x="60" y="207" width="1180" height="52" fill="#F7F1E4"/>
+    <text x="90" y="238" font-weight="600">Square Arch</text>
+    <text x="330" y="238" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="238" fill="#5C4E38">7ft – 11ft height, 5 size tiers</text>
+    <text x="950" y="238" fill="#8A7A5C">12ft width fixed</text>
+
+    <rect x="60" y="259" width="1180" height="52" fill="#FFFFFF"/>
+    <text x="90" y="290" font-weight="600">Circle / Ring Arch</text>
+    <text x="330" y="290" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="290" fill="#5C4E38">Brown · Black · Gold · White · Double</text>
+    <text x="950" y="290" fill="#8A7A5C">6–8ft range</text>
+
+    <rect x="60" y="311" width="1180" height="52" fill="#F7F1E4"/>
+    <text x="90" y="342" font-weight="600">Wall</text>
+    <text x="330" y="342" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="342" fill="#5C4E38">3.3×7 · 5.5×7 · 7×7ft</text>
+    <text x="950" y="342" fill="#8A7A5C">Metal frame</text>
+
+    <rect x="60" y="363" width="1180" height="52" fill="#FFFFFF"/>
+    <text x="90" y="394" font-weight="600">Backdrop</text>
+    <text x="330" y="394" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="394" fill="#5C4E38">Single or Duo Panel · 6 size tiers</text>
+    <text x="950" y="394" fill="#8A7A5C">Mix &amp; match panels</text>
+
+    <rect x="60" y="415" width="1180" height="52" fill="#F7F1E4"/>
+    <text x="90" y="446" font-weight="600">Column</text>
+    <text x="330" y="446" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="446" fill="#5C4E38">Structured or Organic · 7/8/12ft</text>
+    <text x="950" y="446" fill="#8A7A5C">—</text>
+
+    <rect x="60" y="467" width="1180" height="52" fill="#FFFFFF"/>
+    <text x="90" y="498" font-weight="600">Garland</text>
+    <text x="330" y="498" fill="#8A7A5C">Air-Filled</text>
+    <text x="570" y="498" fill="#5C4E38">On the fly · Display · Standing</text>
+    <text x="950" y="498" fill="#8A7A5C">5–10ft</text>
+
+    <rect x="60" y="519" width="1180" height="52" fill="#F7F1E4"/>
+    <text x="90" y="550" font-weight="600">Arch / Wall / Backdrop</text>
+    <text x="330" y="550" fill="#8A7A5C">Helium</text>
+    <text x="570" y="550" fill="#5C4E38">15–50ft arches · panel options</text>
+    <text x="950" y="550" fill="#8A7A5C">Separate structure set</text>
+  </g>
+
+  <rect x="60" y="115" width="1180" height="456" fill="none" stroke="#E4D8C0" stroke-width="1.5"/>
+
+  <text x="60" y="605" font-size="12.5" fill="#8A7A5C" font-style="italic">Condensed from the full matrix, which also includes Hybrid sizing and complete price-per-configuration data.</text>
+</svg>

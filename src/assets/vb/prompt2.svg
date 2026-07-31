@@ -1,0 +1,43 @@
+<svg viewBox="0 0 1100 700" xmlns="http://www.w3.org/2000/svg" font-family="'SF Mono','Menlo','Consolas',monospace">
+  <rect width="1100" height="700" fill="#0D0D0D"/>
+  <rect x="40" y="40" width="1020" height="620" rx="12" fill="#000000" stroke="#2A2A2A" stroke-width="1"/>
+  <rect x="40" y="40" width="1020" height="38" rx="12" fill="#151515"/>
+  <rect x="40" y="66" width="1020" height="12" fill="#151515"/>
+  <circle cx="66" cy="59" r="6" fill="#FF5F57"/>
+  <circle cx="86" cy="59" r="6" fill="#FEBC2E"/>
+  <circle cx="106" cy="59" r="6" fill="#28C840"/>
+  <text x="550" y="63" font-size="12" fill="#8A8A8A" text-anchor="middle" font-family="Helvetica, Arial, sans-serif">claude — vancouver-balloons</text>
+
+  <text x="70.0" y="115" font-size="14" fill="#E8873A" textLength="8.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">></text>
+  <text x="90.0" y="115" font-size="14" fill="#FFFFFF" textLength="481.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">The arch preview is getting cut off in the left panel on</text>
+  <text x="90.0" y="139" font-size="14" fill="#FFFFFF" textLength="447.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">steps 3-6. Look at RoundArchSVG.jsx and find why the</text>
+  <text x="90.0" y="163" font-size="14" fill="#FFFFFF" textLength="387.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">balloons near the top and sides are clipping.</text>
+  <text x="70.0" y="260" font-size="14" fill="#E8873A" textLength="8.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">></text>
+  <text x="90.0" y="260" font-size="14" fill="#FFFFFF" textLength="154.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Remove the unused </text>
+  <text x="244.8" y="260" font-size="14" fill="#E8BF5E" textLength="86.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">HIGHLIGHTS</text>
+  <text x="330.8" y="260" font-size="14" fill="#FFFFFF" textLength="129.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve"> array and the </text>
+  <text x="459.8" y="260" font-size="14" fill="#E8BF5E" textLength="17.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">hl</text>
+  <text x="90.0" y="284" font-size="14" fill="#FFFFFF" textLength="473.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">gradient from defs entirely, instead of patching around</text>
+  <text x="90.0" y="308" font-size="14" fill="#FFFFFF" textLength="464.4" lengthAdjust="spacingAndGlyphs" xml:space="preserve">it. Then update the container styling so the SVG isn't</text>
+  <text x="90.0" y="332" font-size="14" fill="#FFFFFF" textLength="111.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">clipped: set </text>
+  <text x="201.8" y="332" font-size="14" fill="#E8BF5E" textLength="146.2" lengthAdjust="spacingAndGlyphs" xml:space="preserve">overflow: visible</text>
+  <text x="348.0" y="332" font-size="14" fill="#FFFFFF" textLength="180.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve"> and keep the viewBox</text>
+  <text x="90.0" y="356" font-size="14" fill="#FFFFFF" textLength="412.8" lengthAdjust="spacingAndGlyphs" xml:space="preserve">consistent across all four steps that share this</text>
+  <text x="90.0" y="380" font-size="14" fill="#FFFFFF" textLength="86.0" lengthAdjust="spacingAndGlyphs" xml:space="preserve">component.</text>
+
+  <rect x="70" y="200" width="940" height="46" rx="8" fill="#111111" stroke="#262626" stroke-width="1"/>
+  <text x="90" y="228" font-size="12" fill="#28C840" font-family="Helvetica, Arial, sans-serif">● Read(RoundArchSVG.jsx) — checked highlight overlay + container CSS</text>
+
+  <rect x="70" y="410" width="940" height="120" rx="8" fill="#111111" stroke="#262626" stroke-width="1"/>
+  <text x="90" y="435" font-size="12" fill="#28C840" font-family="Helvetica, Arial, sans-serif">● Update(src/components/RoundArchSVG.jsx)</text>
+  <text x="90" y="458" font-size="12.5" fill="#7A7A7A">Removed 3 lines — HIGHLIGHTS array, hl gradient, highlight circle render</text>
+  <text x="90" y="480" font-size="12.5" fill="#7A7A7A">Updated container style: overflow: visible, margin: 0 auto</text>
+  <text x="90" y="502" font-size="12.5" fill="#7A7A7A">Done. Applied consistently across Steps 3-6.</text>
+
+  <line x1="70" y1="555" x2="1010" y2="555" stroke="#222222" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="540" y="551" font-size="11" fill="#5A5A5A" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" letter-spacing="1">REVIEWED AGAINST LIVE PREVIEW -&gt; CONFIRMED FIX</text>
+
+  <rect x="70" y="575" width="940" height="60" rx="8" fill="#111111" stroke="#262626" stroke-width="1"/>
+  <text x="90" y="598" font-size="12" fill="#28C840" font-family="Helvetica, Arial, sans-serif">● Arch preview no longer clips on any step</text>
+  <text x="90" y="620" font-size="13" fill="#7A7A7A">Verified on Skinny Door, Standard, and Supreme Full arch sizes</text>
+</svg>
