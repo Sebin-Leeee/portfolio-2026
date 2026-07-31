@@ -1,0 +1,3775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sebin — Product Designer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/overused-grotesk@5.0.3/index.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text: #0F0F0E;
+      --text-2: #6B6B67;
+      --text-muted: #AAAAAA;
+      --orange: #E8581A;
+      --orange-light: rgba(232,88,26,0.08);
+      --orange-border: rgba(232,88,26,0.25);
+      --border: rgba(0,0,0,0.09);
+      --surface: #FFFFFF;
+      --chip-bg: rgba(255,255,255,0.72);
+      --dark: #0F0F0E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #fff;
+      color: var(--text);
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── GRADIENT HERO BG ───────────────────────────────────── */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 8% 0%, rgba(232,88,26,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 65% at 18% 0%, rgba(200,195,230,0.7) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 55% at 92% 0%, rgba(180,215,240,0.65) 0%, transparent 65%),
+        radial-gradient(ellipse 90% 45% at 50% 0%, rgba(220,215,240,0.4) 0%, transparent 80%),
+        #ffffff;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 180px;
+      background: linear-gradient(to bottom, transparent, #ffffff);
+    }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      padding: 0 clamp(24px, 4vw, 60px);
+      background: rgba(255,255,255,0);
+      transition: background 0.35s ease, border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: var(--border);
+    }
+
+    .nav-inner {
+      max-width: min(1400px, 92vw);
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--chip-bg);
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: rgba(0,0,0,0.18);
+      background: #fff;
+    }
+
+    /* ── HERO SECTION ───────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 50svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: clamp(80px, 8vw, 160px) clamp(32px, 7vw, 160px) clamp(48px, 5vw, 100px);
+    }
+
+    .hero-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: visible;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .hero-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      border-radius: 50%;
+      display: block;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+    }
+    .hero-avatar::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; right: -2px;
+      width: 18px; height: 18px;
+      background: #4CAF82;
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
+
+    .hero-headline {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(22px, 2.8vw, 64px);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: clamp(20px, 2.4vw, 36px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Figma selection on name */
+    .name-highlight {
+      display: inline-block;
+      position: relative;
+      padding: 0 3px;
+      white-space: nowrap;
+    }
+
+    /* selection border */
+    .name-highlight::before {
+      content: '';
+      position: absolute;
+      inset: -1px 0px;
+      border: 1px solid var(--orange);
+      border-radius: 2px;
+      opacity: 0;
+      animation: sel-appear 0.5s ease 0.6s forwards;
+    }
+
+    /* corner + mid handles */
+    .name-highlight .sel-handle {
+      position: absolute;
+      width: 5px; height: 5px;
+      background: #fff;
+      border: 1px solid var(--orange);
+      border-radius: 1px;
+      opacity: 0;
+      animation: sel-appear 0.5s ease 0.6s forwards;
+    }
+    .name-highlight .sel-handle.tl { top: -3px;  left: -3px; }
+    .name-highlight .sel-handle.tr { top: -3px;  right: -3px; }
+    .name-highlight .sel-handle.bl { bottom: -3px; left: -3px; }
+    .name-highlight .sel-handle.br { bottom: -3px; right: -3px; }
+    .name-highlight .sel-handle.tm { top: -3px;  left: 50%; transform: translateX(-50%); }
+    .name-highlight .sel-handle.bm { bottom: -3px; left: 50%; transform: translateX(-50%); }
+
+    /* Figma cursor — floats at bottom-right */
+    .name-highlight .sel-cursor {
+      position: absolute;
+      bottom: -20px;
+      right: -16px;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      opacity: 0;
+      animation: sel-appear 0.4s ease 0.9s forwards, cursor-float 3s ease-in-out 1.3s infinite;
+      pointer-events: none;
+    }
+    .sel-cursor svg {
+      width: 18px; height: 18px;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+    }
+    .sel-cursor-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 400;
+      background: var(--orange);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 3px;
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+
+    @keyframes sel-appear {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes cursor-float {
+      0%, 100% { transform: translate(0, 0); }
+      40%       { transform: translate(3px, -4px); }
+      70%       { transform: translate(-2px, -2px); }
+    }
+
+
+
+    .hero-headline em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* ── CHIPS ──────────────────────────────────────────────── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chip {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: color 0.18s, border-color 0.18s, background 0.18s, transform 0.15s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .chip:hover {
+      color: var(--text);
+      border-color: rgba(0,0,0,0.18);
+      background: #fff;
+      transform: translateY(-1px);
+    }
+    .chip:active { transform: translateY(0); }
+    .chip.active {
+      color: var(--orange);
+      border-color: var(--orange-border);
+      background: var(--orange-light);
+    }
+
+    /* ── CHAT INPUT ─────────────────────────────────────────── */
+    .chat-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .chat-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 12px 10px 20px;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chat-box:focus-within {
+      border-color: rgba(0,0,0,0.2);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+    }
+
+    .chat-prefix {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .chat-input::placeholder { color: var(--text-muted); }
+
+    .chat-send {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--text);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .chat-send:hover { background: #333; transform: scale(1.05); }
+    .chat-send svg { width: 14px; height: 14px; fill: #fff; }
+
+    .chat-response {
+      margin-top: 12px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.65;
+      display: none;
+      backdrop-filter: blur(8px);
+      text-align: left;
+    }
+    .chat-response.visible { display: block; animation: fadeUp 0.25s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-credit {
+      margin-top: 20px;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── WORK SECTION ───────────────────────────────────────── */
+    #work {
+      padding: 0;
+      max-width: min(1200px, 96vw);
+      margin: 0 auto;
+    }
+
+    .work-project {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 100px 0;
+      border-top: 1px solid var(--border);
+    }
+    .work-project:last-child { border-bottom: none; }
+
+    .project-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(28px, 2.6vw, 40px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .project-desc {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-2);
+      line-height: 1.7;
+      letter-spacing: -0.2px;
+      margin-bottom: 28px;
+      max-width: 260px;
+    }
+
+    .project-stat {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .project-stat-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-2);
+      letter-spacing: -0.1px;
+      margin-bottom: 36px;
+    }
+
+    .project-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--text);
+      border: none;
+      border-radius: 100px;
+      padding: 12px 22px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .project-cta:hover { opacity: 0.82; transform: translateY(-1px); }
+    .project-cta svg {
+      width: 12px; height: 12px;
+      stroke: rgba(255,255,255,0.7);
+      fill: none; stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    /* ── MOCKUP CARD ─────────────────────────────────────────── */
+    .mockup-card {
+      border-radius: 28px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mockup-card.teal    { background: linear-gradient(150deg, #142E32 0%, #0A1E22 100%); }
+    .mockup-card.indigo  { background: linear-gradient(150deg, #1A1C40 0%, #0E1030 100%); }
+    .mockup-card.charcoal{ background: linear-gradient(150deg, #1A1A1E 0%, #101012 100%); }
+
+    /* Mac window chrome */
+    .mock-window {
+      width: 82%;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .mock-titlebar {
+      background: #F0F0F0;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-dot.red    { background: #FF5F57; }
+    .mock-dot.yellow { background: #FEBC2E; }
+    .mock-dot.green  { background: #28C840; }
+    .mock-body {
+      padding: 16px;
+      background: #fff;
+    }
+
+    /* Fake UI for AI builder */
+    .mock-ai-header {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .mock-ai-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 10px;
+      color: #444;
+    }
+    .mock-tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 100px;
+      font-size: 9px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .mock-tag.orange { background: #FEF0E8; color: #E8581A; }
+    .mock-tag.blue   { background: #E8F0FE; color: #1967D2; }
+    .mock-tag.green  { background: #E6F4EA; color: #1E8E3E; }
+    .mock-tag.purple { background: #F3E8FD; color: #8430CE; }
+
+    /* Fake brand card */
+    .mock-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mock-brand-logo {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      margin-bottom: 4px;
+    }
+    .mock-brand-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: #eee;
+    }
+    .mock-brand-bar.dark { background: #222; width: 60%; }
+    .mock-brand-bar.mid  { background: #888; width: 45%; }
+    .mock-color-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .mock-swatch {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+    }
+
+    /* Fake mobile screens */
+    .mock-phones {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      padding: 12px;
+      justify-content: center;
+    }
+    .mock-phone {
+      width: 62px;
+      border-radius: 12px;
+      background: #f7f7f7;
+      border: 2px solid #ddd;
+      overflow: hidden;
+    }
+    .mock-phone-bar {
+      height: 6px;
+      background: #e0e0e0;
+      margin: 6px 8px 4px;
+      border-radius: 3px;
+    }
+    .mock-phone-bar.short { width: 55%; }
+    .mock-phone-img {
+      height: 70px;
+      background: linear-gradient(160deg, #e0e7ff, #c7d2fe);
+      margin: 4px;
+      border-radius: 6px;
+    }
+    .mock-phone.tall { transform: translateY(-10px); }
+
+    /* ── ABOUT STRIP ────────────────────────────────────────── */
+    /* ── ABOUT + CONTACT (merged) ───────────────────────────── */
+    #contact {
+      position: relative;
+      text-align: center;
+      padding: clamp(40px, 6vw, 80px) clamp(24px, 6vw, 80px) 100px;
+      overflow: hidden;
+    }
+
+    #contact .ac-grad {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 50% at 10% 50%, rgba(232,88,26,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 65% 55% at 90% 40%, rgba(180,215,240,0.5) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 50% 90%, rgba(200,195,230,0.45) 0%, transparent 70%),
+        #ffffff;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #contact .ac-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: min(1200px, 96vw);
+      margin: 0 auto;
+    }
+
+    /* frosted card */
+    .ac-card {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 20px;
+      padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 40px);
+      margin-bottom: 24px;
+    }
+
+    .ac-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .ac-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #3ecf6a;
+      box-shadow: 0 0 0 0 rgba(62,207,106,0.5);
+      animation: ac-pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes ac-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(62,207,106,0.45); }
+      50%       { box-shadow: 0 0 0 5px rgba(62,207,106,0); }
+    }
+
+    .ac-cta {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+
+    .ac-sub {
+      font-size: 14px;
+      color: var(--text);
+      opacity: 0.5;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .ac-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--orange);
+      text-decoration: none;
+      background: var(--orange-light);
+      border: 1px solid var(--orange-border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      margin-bottom: 0;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .ac-email:hover { background: rgba(232,88,26,0.13); }
+
+    .ac-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .ac-link {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      opacity: 0.6;
+      text-decoration: none;
+      padding: 5px 13px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+    .ac-link:hover { opacity: 1; border-color: rgba(0,0,0,0.2); }
+
+    .ac-bio {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.7;
+    }
+
+    .ac-divider {
+      width: 32px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 16px;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    .ac-footer {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      align-items: center;
+      padding-top: 20px;
+      margin-top: 0;
+    }
+
+    .ac-footer span {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── REVEAL ─────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+
+    /* ── MOBILE ─────────────────────────────────────────────── */
+    @media (max-width: 840px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 4px; }
+      .nav-links a { font-size: 12px; padding: 5px 11px; }
+
+      #hero { padding: 110px 24px 60px; min-height: auto; }
+      .hero-headline { font-size: clamp(28px, 8vw, 48px); letter-spacing: -0.8px; }
+
+      #work { padding: 0 20px 80px; }
+      .work-project { grid-template-columns: 1fr; gap: 32px; padding: 56px 0; }
+      .project-left { order: 1; }
+      .mockup-card { order: 0; aspect-ratio: 16/9; }
+
+      #about { padding: 72px 20px; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+
+      #contact { padding: 72px 20px; }
+      footer { padding: 16px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+
+    /* ── KDD CASE STUDY — LIGHT THEME ──────────────────────────── */
+    :root {
+      --kdd-bg:      #F8F7F5;
+      --kdd-surface: #FFFFFF;
+      --kdd-border:  #E5E4E1;
+      --kdd-accent:  #4B3BFF;
+      --kdd-white:   #0F0F0E;
+      --kdd-muted:   #6B6B67;
+    }
+
+    /* Overlay override for KDD */
+    #cs-overlay.kdd-dark {
+      background: var(--kdd-bg);
+      color: var(--kdd-white);
+    }
+    #cs-overlay.kdd-dark .cs-topbar {
+      background: rgba(248,247,245,0.9);
+      border-bottom-color: var(--kdd-border);
+    }
+    #cs-overlay.kdd-dark .cs-back,
+    #cs-overlay.kdd-dark .cs-topbar-title { color: var(--kdd-muted); }
+    #cs-overlay.kdd-dark .cs-back:hover { color: var(--kdd-white); }
+
+    /* KDD body overrides */
+    .kdd-body {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+
+    /* ── Mobile scroll progress bar */
+    #kdd-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--kdd-accent);
+      z-index: 1001;
+      transition: width 0.1s linear;
+      display: none;
+    }
+    #cs-overlay.kdd-dark #kdd-progress { display: block; }
+
+    /* ── KDD Hero */
+    .kdd-hero {
+      padding: 72px 0 80px;
+      border-bottom: 1px solid var(--kdd-border);
+    }
+    .kdd-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .kdd-hero-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 24px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-hero-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(36px,5.5vw,64px);
+      font-weight: 500;
+      line-height: 1.0;
+      color: var(--kdd-white);
+      margin: 0 0 40px;
+      letter-spacing: -1.2px;
+    }
+    .kdd-hero-sub {
+      display: none;
+    }
+    .kdd-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .kdd-pill {
+      border: 1px solid var(--kdd-border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      color: var(--kdd-muted);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-pill-dark {
+      background: var(--kdd-white);
+      color: var(--kdd-bg);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-scroll-ind {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .kdd-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: var(--kdd-accent);
+      animation: kdd-pulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes kdd-pulse { from { opacity:1; } to { opacity:0.3; } }
+    .kdd-scroll-text {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      border-top: 1px solid var(--kdd-border);
+      padding: 16px 0;
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* ── Hero cover image */
+    .kdd-hero-cover {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .kdd-hero-cover img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Two-column layout */
+    .kdd-layout {
+      display: flex;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+    }
+
+    /* ── Sticky sidebar */
+    .kdd-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 80px;
+      padding-left: 8px;
+    }
+    .kdd-sidebar-inner {
+      position: relative;
+      padding-left: 20px;
+    }
+    .kdd-sidebar-line {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--kdd-border);
+    }
+    .kdd-sidebar-project {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      margin-bottom: 28px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-nav-list {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .kdd-nav-item {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      color: #444;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+      position: relative;
+      letter-spacing: -0.1px;
+      user-select: none;
+    }
+    .kdd-nav-item:hover { color: #888; }
+    .kdd-nav-item.active {
+      color: var(--kdd-accent);
+      font-weight: 500;
+    }
+    .kdd-nav-dot {
+      position: absolute;
+      left: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--kdd-accent);
+      opacity: 0;
+      transition: opacity 0.3s ease, top 0.3s ease;
+    }
+    .kdd-nav-item.active .kdd-nav-dot { opacity: 1; }
+
+    /* ── Right content */
+    .kdd-content {
+      flex: 1;
+      min-width: 0;
+      padding: 0 0 160px 40px;
+    }
+
+    /* ── Sections */
+    .kdd-section {
+      padding: clamp(64px,8vw,120px) 0;
+      border-top: 1px solid var(--kdd-border);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .kdd-section:first-child { border-top: none; }
+    .kdd-scroll-story-wrap { margin-top: -48px; }
+    .kdd-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .kdd-section-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 12px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-section-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(22px,2.8vw,32px);
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 20px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .kdd-body-text {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    /* ── Overview two-col */
+    .kdd-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .kdd-two-col > div {
+      border: 1px solid var(--kdd-border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .kdd-col-heading {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 10px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-col-body {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Stat cards */
+    .kdd-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .kdd-stat-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .kdd-stat-card-label {
+      font-size: 13px;
+      color: var(--kdd-accent);
+      margin-bottom: 10px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .kdd-stat-card-value {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      line-height: 1.2;
+    }
+
+    /* ── Pull quote */
+    .kdd-pull-quote {
+      border-left: 3px solid var(--kdd-accent);
+      padding: 8px 0 8px 32px;
+      margin: 48px 0;
+    }
+    .kdd-pull-quote p {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(18px,2.5vw,26px);
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--kdd-white);
+    }
+
+    /* ── Problem rows */
+    .kdd-problem-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--kdd-border);
+    }
+    .kdd-problem-num {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 36px;
+      color: var(--kdd-accent);
+      opacity: 0.4;
+      width: 52px;
+      flex-shrink: 0;
+      line-height: 1;
+      padding-top: 2px;
+    }
+    .kdd-problem-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 6px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-problem-body {
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+
+    /* ── Pixel grid animation */
+    .kdd-pixel-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+      max-width: 480px;
+      margin: 0 auto 64px;
+      aspect-ratio: 1;
+    }
+    .kdd-pixel {
+      border-radius: 3px;
+      background: #E5E4E1;
+      aspect-ratio: 1;
+      animation: kdd-pixel-wave 3s ease-in-out infinite;
+    }
+    @keyframes kdd-pixel-wave {
+      0%, 100% { background: #E5E4E1; }
+      50%       { background: var(--kdd-accent); }
+    }
+
+    /* ── Concept cards */
+    .kdd-concept-card {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      padding: 40px 0;
+      border-top: 1px solid var(--kdd-border);
+    }
+    .kdd-concept-letter {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 80px;
+      color: var(--kdd-accent);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 80px;
+      text-align: center;
+    }
+    .kdd-concept-kr {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--kdd-muted);
+      margin-bottom: 6px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-concept-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 12px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-concept-body {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      line-height: 1.8;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* ── Logo section */
+    .kdd-logo-display {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 20px;
+      padding: clamp(40px,6vw,80px);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .kdd-logo-display svg.pgrid-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .kdd-logo-display img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      filter: invert(1);
+    }
+    .kdd-logo-wordmark-label {
+      position: relative;
+      z-index: 1;
+      margin-top: 20px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      text-align: center;
+    }
+    .kdd-variant-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .kdd-variant-card {
+      border-radius: 16px;
+      padding: clamp(24px,4vw,40px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--kdd-border);
+    }
+    .kdd-variant-card img {
+      width: 160px;
+      height: auto;
+    }
+    .kdd-variant-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* ── Color swatches */
+    .kdd-swatches {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .kdd-swatch-col { display: flex; flex-direction: column; gap: 12px; }
+    .kdd-swatch-rect {
+      height: 144px;
+      border-radius: 12px;
+      width: 100%;
+    }
+    .kdd-swatch-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--kdd-muted);
+    }
+    .kdd-swatch-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-swatch-role {
+      font-size: 12px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* ── Application grid */
+    .kdd-app-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .kdd-app-card { border-radius: 16px; overflow: hidden; }
+    .kdd-app-visual {
+      height: 256px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .kdd-app-visual img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .kdd-app-info {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-top: none;
+      padding: 20px;
+    }
+    .kdd-app-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 4px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-app-caption {
+      font-size: 13px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      line-height: 1.5;
+    }
+
+    /* ── Outcome stats */
+    .kdd-outcome-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+    .kdd-outcome-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .kdd-outcome-num {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(40px,4.5vw,56px);
+      color: var(--kdd-accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .kdd-outcome-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 4px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-outcome-sub {
+      font-size: 13px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-closing-text {
+      font-size: 17px;
+      color: var(--kdd-muted);
+      line-height: 1.85;
+      border-top: 1px solid var(--kdd-border);
+      padding-top: 48px;
+      margin-top: 16px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-next-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--kdd-border);
+      padding-top: 32px;
+      margin-top: 48px;
+    }
+    .kdd-next-link {
+      font-size: 14px;
+      color: var(--kdd-muted);
+      text-decoration: none;
+      font-family: 'Pretendard', sans-serif;
+      transition: color 0.2s;
+    }
+    .kdd-next-link:hover { color: var(--kdd-white); text-decoration: underline; }
+
+    /* ── KDD Footer */
+    .kdd-footer {
+      border-top: 1px solid var(--kdd-border);
+      padding: 32px clamp(24px,6vw,80px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── KDD SCROLL STORY ─────────────────────────────── */
+    .kdd-scroll-story {
+      height: 500vh;
+      position: relative;
+    }
+    .kdd-story-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      background: var(--kdd-bg);
+    }
+    .kdd-story-left {
+      width: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 clamp(20px,3vw,48px) 0 40px;
+      text-align: left;
+    }
+    .kdd-story-steps-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+    }
+    .kdd-story-step {
+      position: absolute;
+      top: 50%; left: 0;
+      transform: translateY(calc(-50% + 12px));
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+    .kdd-story-step.active {
+      opacity: 1;
+      transform: translateY(-50%);
+      pointer-events: auto;
+      position: absolute;
+    }
+    .kdd-story-cat {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 16px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-story-h {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 500;
+      color: var(--kdd-white);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .kdd-story-bold {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .kdd-story-p {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+    }
+    /* Right visual panel */
+    .kdd-story-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kdd-vis-box {
+      position: relative;
+      width: min(72%, 380px);
+      aspect-ratio: 1;
+      background: #EFEFED;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .kdd-vis-frame {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.55s ease;
+    }
+    .kdd-vis-frame.active { opacity: 1; }
+    /* Step 0: single pixel */
+    .kdd-pixel-box {
+      width: min(35%, 180px);
+      aspect-ratio: 1;
+      background: #0F0F0E;
+    }
+    /* Step 1: pixel cluster */
+    .kdd-pixel-group {
+      position: relative;
+      width: min(40%, 200px);
+      aspect-ratio: 1;
+    }
+    .kdd-pg-sq { position: absolute; background: #0F0F0E; }
+    .kdd-pg-tr { width: 44%; height: 44%; top: 0; right: 0; }
+    .kdd-pg-mr { width: 37%; height: 37%; top: 28%; right: 22%; }
+    .kdd-pg-bl { width: 29%; height: 29%; bottom: 18%; right: 43%; }
+    /* Letter SVGs */
+    .kdd-letter-svg { width: min(70%, 340px); height: auto; }
+    .kdd-letter-img { width: min(50%, 240px); height: auto; display: block; }
+
+    /* ── Instagram grid */
+    .kdd-ig-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 4px;
+      height: 100%;
+    }
+    .kdd-ig-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 11px;
+    }
+
+    /* ── Responsive */
+    @media (max-width: 840px) {
+      .kdd-sidebar { display: none; }
+      .kdd-content { padding-left: 0; }
+      .kdd-two-col { grid-template-columns: 1fr; }
+      .kdd-swatches { grid-template-columns: repeat(2,1fr); }
+      .kdd-app-grid { grid-template-columns: 1fr; }
+      .kdd-stat-row { grid-template-columns: 1fr 1fr; }
+      .kdd-outcome-stats { grid-template-columns: 1fr 1fr; }
+      .kdd-variant-row { grid-template-columns: 1fr; }
+      .kdd-hero-stats { gap: 24px; font-size: 11px; }
+    }
+    @media (max-width: 520px) {
+      .kdd-swatches { grid-template-columns: 1fr 1fr; }
+      .kdd-stat-row { grid-template-columns: 1fr; }
+      .kdd-outcome-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ── CASE STUDY OVERLAY ─────────────────────────────────── */
+
+    /* ── CASE STUDY OVERLAY ─────────────────────────────────── */
+    #cs-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: #fff;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      opacity: 0;
+      transform: translateY(24px);
+      pointer-events: none;
+      transition: opacity 0.32s ease, transform 0.32s ease;
+    }
+    #cs-overlay.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    /* Top bar — back left, title centered */
+    .cs-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 52px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 clamp(20px, 4vw, 56px);
+    }
+    .cs-topbar-inner {
+      display: contents;
+    }
+    .cs-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s;
+      letter-spacing: -0.1px;
+      justify-self: start;
+    }
+    .cs-back:hover { color: var(--text); }
+    .cs-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .cs-topbar-title {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      text-align: center;
+      grid-column: 2;
+    }
+
+    /* Two-column layout: sidenav + content */
+    .cs-layout {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      min-height: calc(100vh - 52px);
+      align-items: start;
+    }
+
+    /* Left sticky sidenav */
+    #cs-sidenav {
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      padding: 48px 0 48px 32px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+    }
+    .cs-sidenav-track { display: none; }
+    .cs-sidenav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 6px 0 6px 12px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-align: left;
+    }
+    .cs-sidenav-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 2px;
+      height: 16px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .cs-sidenav-item.active::before { transform: translateY(-50%) scaleY(1); }
+    .cs-sidenav-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.3;
+      transition: color 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+    .cs-sidenav-item.active .cs-sidenav-label,
+    .cs-sidenav-item:hover .cs-sidenav-label { color: var(--text); font-weight: 500; }
+
+    /* Content body */
+    .cs-body {
+      max-width: min(700px, 90%);
+      margin: 0 auto;
+      padding: clamp(56px, 6vw, 88px) 0 clamp(80px, 10vw, 160px);
+    }
+
+    @media (max-width: 768px) {
+      .cs-layout { grid-template-columns: 1fr; }
+      #cs-sidenav { display: none; }
+      .cs-body { max-width: 92vw; padding-top: 40px; }
+    }
+
+    /* ── CASE STUDY CONTENT TYPOGRAPHY ──────────────────────── */
+
+    /* Label above title */
+    .cs-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      letter-spacing: -0.1px;
+    }
+
+    /* Big hero title */
+    .cs-title {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(32px, 4.5vw, 60px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    /* Tags row */
+    .cs-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 56px;
+    }
+    .cs-tag {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-2);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 14px;
+      letter-spacing: -0.1px;
+    }
+    .cs-tag.shipped {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Horizontal rule */
+    .cs-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 56px 0;
+    }
+
+    /* TL;DR table */
+    .cs-tldr {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 56px;
+    }
+    .cs-tldr tr { border-bottom: 1px solid var(--border); }
+    .cs-tldr tr:first-child { border-top: 1px solid var(--border); }
+    .cs-tldr td {
+      padding: 18px 0;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .cs-tldr td:first-child {
+      width: 100px;
+      color: var(--text-muted);
+      font-size: 13px;
+      padding-right: 24px;
+    }
+    .cs-tldr td:nth-child(2) {
+      width: 140px;
+      font-weight: 500;
+      color: var(--text-2);
+      font-size: 14px;
+      padding-right: 24px;
+    }
+    .cs-tldr td:last-child { color: var(--text-2); }
+
+    /* Stats */
+    .cs-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-bottom: 56px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-stat-block {
+      padding: 28px 0;
+      border-right: 1px solid var(--border);
+    }
+    .cs-stat-block:last-child { border-right: none; }
+    .cs-stat-num {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .cs-stat-desc {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Section label */
+    .cs-section-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      margin-top: 64px;
+    }
+    .cs-section-label:first-child { margin-top: 0; }
+
+    /* Section heading */
+    .cs-h2 {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    /* Body text */
+    .cs-p {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text-2);
+      letter-spacing: -0.1px;
+      margin-bottom: 20px;
+    }
+    .cs-p:last-child { margin-bottom: 0; }
+
+    /* Image placeholder */
+    .cs-img {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 32px 0;
+      background: #F4F4F2;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cs-img-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: #BBBBBB;
+      letter-spacing: 0.06em;
+    }
+    .cs-img.tall { aspect-ratio: 4/3; }
+    .cs-img.short { aspect-ratio: 21/9; }
+
+    /* Two-col layout */
+    .cs-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    /* Pull quote */
+    .cs-quote {
+      border-left: 2px solid var(--text);
+      padding: 4px 0 4px 24px;
+      margin: 40px 0;
+    }
+    .cs-quote p {
+      font-family: 'Pretendard', sans-serif;
+      font-style: italic;
+      font-size: clamp(17px, 1.8vw, 22px);
+      line-height: 1.6;
+      color: var(--text-2);
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
+
+    /* Photo caption */
+    .cs-photo-cap-title {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 2px;
+    }
+    .cs-photo-cap-sub {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 620px) {
+      .cs-two { grid-template-columns: 1fr; }
+      .cs-stats { grid-template-columns: 1fr 1fr; }
+      .cs-stat-block:nth-child(2) { border-right: none; }
+    }
+
+    /* Coming soon state */
+    .cs-soon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .cs-soon-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      opacity: 0.35;
+    }
+    .cs-soon h2 {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.8px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .cs-soon p {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 15px;
+      color: var(--text-muted);
+      letter-spacing: -0.2px;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    /* ── Vancouver Balloons case study components ──────────────── */
+    :root {
+      --vb-gold:  #CAA352;
+      --vb-cream: #FDFAF6;
+      --vb-gold-10: rgba(202,163,82,0.10);
+      --vb-gold-20: rgba(202,163,82,0.20);
+    }
+
+    /* Executive summary table */
+    .vb-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 56px;
+    }
+    .vb-summary-cell {
+      padding: 24px 28px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .vb-summary-cell:nth-child(even) { border-right: none; }
+    .vb-summary-cell:nth-child(3),
+    .vb-summary-cell:nth-child(4) { border-bottom: none; }
+    .vb-summary-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--vb-gold);
+      margin-bottom: 10px;
+    }
+    .vb-summary-body {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #444;
+      letter-spacing: -0.4px;
+    }
+
+    /* Stat strip — VB gold numbers */
+    .vb-stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    .vb-stat-cell {
+      padding: 28px 0;
+      border-right: 1px solid var(--border);
+    }
+    .vb-stat-cell:last-child { border-right: none; }
+    .vb-stat-num {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      color: var(--vb-gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .vb-stat-desc {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+      max-width: 160px;
+    }
+
+    /* Insight section */
+    .vb-section { margin-bottom: 0; }
+
+    /* Media slots */
+    .vb-media {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--vb-cream);
+      border: 1px solid var(--border);
+      margin-top: 32px;
+      margin-bottom: 48px;
+    }
+    .vb-media img { width: 100%; display: block; }
+    .vb-media-cap {
+      padding: 12px 20px 16px;
+      background: #F8F8F6;
+      border-top: 1px solid var(--border);
+    }
+    .vb-media-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+      margin-bottom: 48px;
+    }
+    .vb-media-pair > div {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--vb-cream);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .vb-media-pair > div img { width: 100%; display: block; }
+    .vb-media-pair .vb-media-cap { flex: 1; }
+
+    /* Inline component embed slot */
+    .vb-embed {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--vb-cream);
+      margin-top: 32px;
+      margin-bottom: 48px;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .vb-embed-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: #bbb;
+    }
+    .vb-embed-placeholder span {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Gold highlight variant */
+    .vb-hl {
+      background: linear-gradient(120deg, rgba(202,163,82,0.28) 0%, rgba(202,163,82,0.28) 100%);
+      background-size: 0% 88%; background-repeat: no-repeat; background-position: 0 90%;
+      border-radius: 2px; padding: 0 2px;
+      transition: background-size 0.55s cubic-bezier(.23,1,.32,1);
+    }
+    .vb-hl.in { background-size: 100% 88%; }
+
+    @media (max-width: 680px) {
+      .vb-summary { grid-template-columns: 1fr; }
+      .vb-summary-cell:nth-child(even) { border-right: none; }
+      .vb-summary-cell:nth-child(odd)  { border-right: none; }
+      .vb-summary-cell:nth-child(3)    { border-bottom: 1px solid var(--border); }
+      .vb-summary-cell:last-child      { border-bottom: none; }
+      .vb-stat-strip { grid-template-columns: 1fr; }
+      .vb-stat-cell  { border-right: none; border-bottom: 1px solid var(--border); }
+      .vb-stat-cell:last-child { border-bottom: none; }
+      .vb-media-pair { grid-template-columns: 1fr; }
+    }
+
+    /* Sub-headings (Our Story, Community Values, etc.) */
+    .cs-meta-val {
+  @media (min-width: 1400px) {
+      .hero-inner, .work-inner, .ac-wrap, .kdd-hero-inner, .kdd-layout { max-width: 1280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────── -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">Sebin</a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#" style="color:var(--orange);border-color:var(--orange-border);">Available ✦</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <div style="position:relative; overflow:hidden;">
+    <div class="hero-bg"></div>
+    <section id="hero">
+      <div class="hero-avatar"><img src="src/assets/sebin-profile.png" alt="Sebin" /></div>
+
+      <h1 class="hero-headline">
+        I'm <span class="name-highlight">Sebin
+          <span class="sel-handle tl"></span>
+          <span class="sel-handle tr"></span>
+          <span class="sel-handle tm"></span>
+          <span class="sel-handle bl"></span>
+          <span class="sel-handle br"></span>
+          <span class="sel-handle bm"></span>
+          <span class="sel-cursor">
+            <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 2l11 6.5-5.5 1L6 15 3 2z" fill="#E8581A" stroke="#fff" stroke-width="1"/>
+            </svg>
+          </span>
+        </span>, based in Vancouver.<br />
+        I design products that <em>actually ship.</em>
+      </h1>
+
+      <div class="chips" id="chips">
+        <button class="chip" data-key="resume">résumé ↗</button>
+        <button class="chip" data-key="linkedin">linkedin ↗</button>
+        <button class="chip" data-key="chat">wanna chat? ↗</button>
+        <button class="chip" data-key="work">see my work ↓</button>
+      </div>
+
+      <div class="chat-wrap">
+        <div class="chat-box">
+          <span class="chat-prefix">&gt;_</span>
+          <input class="chat-input" id="chatInput" type="text" placeholder="ask Sebin anything..." autocomplete="off" />
+          <button class="chat-send" id="chatSend" aria-label="Send">
+            <svg viewBox="0 0 16 16"><path d="M14.5 8L1.5 1.5l3 6.5-3 6.5L14.5 8z"/></svg>
+          </button>
+        </div>
+        <div class="chat-response" id="chatResponse"></div>
+      </div>
+
+      <p class="hero-credit">Designed with care. Built with Claude Code. · 2026</p>
+    </section>
+  </div>
+
+  <!-- ── WORK ─────────────────────────────────────────────── -->
+  <section id="work">
+
+    <!-- Project 1 -->
+    <div class="work-project reveal">
+      <div class="project-left">
+        <div class="project-num">001</div>
+        <h2 class="project-title">Vancouver Balloons<br />AI Builder</h2>
+        <p class="project-desc">
+          An AI copilot and custom balloon builder designed from real staff interviews.
+          Built in React + Tailwind with real-time SVG previews and a guided ordering flow.
+        </p>
+        <div class="project-stat">~40%</div>
+        <div class="project-stat-label">estimated time saved per order</div>
+        <a href="#" class="project-cta" data-project="balloons">
+          Open case study
+          <svg viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+        </a>
+      </div>
+      <div class="mockup-card teal" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <img src="src/assets/vb/vb-prompt-terminal-ui.svg" alt="VB prompt terminal" style="width:100%;height:100%;object-fit:contain;display:block;" />
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="work-project reveal reveal-d1">
+      <div class="project-left">
+        <div class="project-num">002</div>
+        <h2 class="project-title">KDD Rebrand</h2>
+        <p class="project-desc">
+          Full brand identity redesign: new logo, color system, and typography.
+          Applied to real event collateral, merchandise, and posters.
+        </p>
+        <div class="project-stat">3+</div>
+        <div class="project-stat-label">event touchpoints applied</div>
+        <a href="#" class="project-cta" data-project="kdd">
+          Open case study
+          <svg viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+        </a>
+      </div>
+      <div class="mockup-card indigo" style="padding:0;overflow:hidden;">
+        <img src="src/assets/kdd/sticker-1.jpeg" alt="KDD sticker" style="width:100%;height:100%;object-fit:cover;display:block;" />
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="work-project reveal reveal-d2">
+      <div class="project-left">
+        <div class="project-num">003</div>
+        <h2 class="project-title">PicTok</h2>
+        <p class="project-desc">
+          A mobile photo-sharing concept built on end-to-end UX research: interviews,
+          competitive analysis, iterative prototyping, and usability testing.
+        </p>
+        <div class="project-stat">5</div>
+        <div class="project-stat-label">usability test sessions conducted</div>
+        <a href="#" class="project-cta" data-project="pictok">
+          Open case study
+          <svg viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+        </a>
+      </div>
+      <div class="mockup-card charcoal" style="padding:0;overflow:hidden;">
+        <img src="src/assets/pictok/pictok_mockup.jpg" alt="PicTok mockup" style="width:100%;height:100%;object-fit:cover;display:block;" />
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── ABOUT + CONTACT + FOOTER ────────────────────────── -->
+  <section id="contact">
+    <div class="ac-grad"></div>
+    <div class="ac-wrap">
+      <div class="ac-card reveal">
+        <div class="ac-status">
+          <span class="ac-status-dot"></span>
+          Available for work
+        </div>
+        <h2 class="ac-cta">Let's work together.</h2>
+        <p class="ac-sub">Open to opportunities anywhere — remote, hybrid, or on-site.</p>
+        <a href="mailto:sebin.lee.work@gmail.com" class="ac-email">
+          sebin.lee.work@gmail.com
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <p class="ac-bio" style="margin-top:16px;">Product designer based in Vancouver, BC. 4 years designing things people actually use, from research all the way to shipping in code.</p>
+      </div>
+      <div class="ac-footer reveal reveal-d2" style="justify-content:center;">
+        <span>© 2026 Sebin Lee</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── CASE STUDY OVERLAY ──────────────────────────────────── -->
+  <div id="cs-overlay" role="dialog" aria-modal="true" aria-label="Case study">
+    <div class="cs-topbar">
+      <div class="cs-topbar-inner">
+        <button class="cs-back" id="cs-close">
+          <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to work
+        </button>
+        <span class="cs-topbar-title" id="cs-topbar-title"></span>
+      </div>
+    </div>
+
+    <div class="cs-layout">
+      <nav id="cs-sidenav" aria-label="Case study sections">
+        <div class="cs-sidenav-track"></div>
+      </nav>
+      <div class="cs-body" id="cs-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // ── Nav scroll
+    const nav = document.getElementById('nav');
+    addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), { passive: true });
+
+    // ── Scroll reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Chip shortcuts
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const key = chip.dataset.key;
+        chip.classList.add('active');
+        setTimeout(() => chip.classList.remove('active'), 900);
+        if (key === 'linkedin') {
+          window.open('https://www.linkedin.com/in/sebin-leeee/', '_blank');
+        }
+        if (key === 'resume') {
+          window.open('https://drive.google.com/file/d/1P79duDOSYYhz8AfWj0vyO91jY-QySsi2/view?usp=sharing', '_blank');
+        }
+        if (key === 'chat') {
+          setTimeout(() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }), 200);
+        }
+        if (key === 'work') {
+          setTimeout(() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' }), 200);
+        }
+      });
+    });
+
+    // ── Chat Q&A
+    const QA = [
+      { match: /^hi$|^hey$|^hello$|^sup$|^yo$|howdy/i,
+        ans: 'Hey! Feel free to ask me anything about Sebin — process, projects, availability, whatever you\'re curious about.' },
+      { match: /who|about|introduce|yourself|tell me/i,
+        ans: 'Sebin is a product designer based in Vancouver, BC — originally from South Korea. 4 years of experience, research-first, designs in Figma, and actually writes code. Not just "I can read CSS" — real coding experience in React + Tailwind + TypeScript. The handoff is not the finish line.' },
+      { match: /process|approach|how.+design|method|workflow/i,
+        ans: 'Always starts with research: talking to actual users, mapping the problem space, figuring out what\'s really going on before opening Figma. Then low-fi sketches, prototype, test with real people, iterate. Because Sebin also writes code, the designs get challenged against reality early — so there are no surprises at handoff.' },
+      { match: /vancouv|balloon|vb/i,
+        ans: 'Vancouver Balloons is a local balloon decor business. Sebin designed and built an 8-step AI-powered order configurator for them — customers pick balloon type, style, size, color structure, number of colors, colors, fill in their info, and confirm. The whole thing generates a live arch preview that recolors in real time. It\'s deployed and in use internally. Organic balloons are live as the MVP, with helium coming next.' },
+      { match: /kdd|rebrand|brand|identity|logo/i,
+        ans: 'KDD is a Korean tech community in Vancouver. Sebin led the full rebrand: new logo built on a pixel grid, color system, typography, and a complete set of templates so anyone on the team can create social posts, slides, or decks without starting from scratch. It launched at the KDD Tech Conference 2026, co-hosted with the Korean Consulate.' },
+      { match: /pictok|accessibility|visual.?impair|blind/i,
+        ans: 'PicTok is a photo-sharing app designed for visually impaired users. Sebin was Lead UX Designer on a 4-person team. The project covered end-to-end UX: scientific research, two user personas, user flows, wireframes, a full design system with high-contrast color modes, intuitive gesture design, and usability testing. The app was built and shipped.' },
+      { match: /project|work|portfolio|case stud/i,
+        ans: 'Three case studies in the portfolio: Vancouver Balloons (AI-powered order configurator, shipped to a real client), KDD Rebrand (full brand identity system launched at a real conference), and PicTok (end-to-end mobile UX for visually impaired users). Scroll down to dig in.' },
+      { match: /ai|copilot|artificial|llm|gpt|claude|cursor/i,
+        ans: 'AI is a big part of how Sebin works right now. For Vancouver Balloons, every component was built by directing Claude Code: write the spec, feed in the asset, review the output against the design, fix what\'s off, move on. The decisions are always Sebin\'s. AI handles execution. The interesting design challenge is the interface layer: when to show suggestions, how to handle uncertainty, keeping humans in control.' },
+      { match: /stack|tool|figma|react|tailwind|tech|build|code|framer|vibe|coding/i,
+        ans: 'Designs in Figma and Framer, builds in React + Tailwind + TypeScript. Really into vibe coding right now — using Claude and Cursor to move fast, prototype ideas in hours, and ship things that actually work. It\'s not about replacing the design thinking, it\'s about removing the gap between idea and reality.' },
+      { match: /strength|good.at|speciali|skill|stand.?out|different|unique/i,
+        ans: 'Designer who codes — for real. Not just "I know CSS," but actual coding experience in React + Tailwind + TypeScript. Can go from research to Figma to a working prototype in the same day. Also into vibe coding, so prototyping speed is genuinely fast. That combination makes handoffs smoother and final products closer to the original intent.' },
+      { match: /avail|hire|open|role|job|looking|opportunit|full.?time/i,
+        ans: 'Actively looking for full-time product design roles. Based in Vancouver, originally from South Korea — open to remote anywhere, hybrid in Vancouver, or relocating internationally. No geographic restrictions. If you\'re hiring or just want to talk, reach out at sebin.lee.work@gmail.com.' },
+      { match: /salary|compens|rate|pay/i,
+        ans: 'Happy to talk numbers directly! Reach out at sebin.lee.work@gmail.com and we can get into the details.' },
+      { match: /remote|hybrid|office|onsite|relocat|country|countries|global|international|korea|us|uk|europe/i,
+        ans: 'Based in Vancouver, BC — originally from South Korea. Open to remote anywhere in the world, hybrid in Vancouver, or relocating if the role is the right fit. Not limiting by geography.' },
+      { match: /experience|year|background|level|senior|junior|mid/i,
+        ans: '4 years of experience across AI product design, brand identity, and mobile UX research. Comfortable going from zero — interviews, problem definition, flow mapping — all the way through to shipping in code. Not quite senior by title yet, but works and thinks like one.' },
+      { match: /inspir|influence|admire|look.up|favourite|favorite/i,
+        ans: 'Pays close attention to Linear, Vercel, and Raycast — teams that treat UI as a real competitive advantage. Broader influences: Dieter Rams, early Apple HIG docs, and Japanese product design. The through-line is clarity and restraint over decoration.' },
+      { match: /hobby|outside|free.?time|fun|weekend|life/i,
+        ans: 'Outside of design — into coffee (the kind where the origin matters), walks around Vancouver, and occasionally going down rabbit holes about type design or obscure UI history. Also been playing with 3D lately, mostly as an excuse to learn Three.js.' },
+      { match: /contact|email|reach|get.?in.?touch|message|dm/i,
+        ans: 'Best way to reach Sebin: sebin.lee.work@gmail.com. Also on LinkedIn. Response time is fast, always happy to chat about design, roles, or whatever you\'re working on.' },
+      { match: /resume|cv/i,
+        ans: 'Drop a note at sebin.lee.work@gmail.com and a resume will come right back. Or scroll down to the contact section.' },
+      { match: /feedback|critique|thought|opinion|review/i,
+        ans: 'Always open to feedback on the work. If something in the case studies feels unclear or you want to dig into a decision, reach out at sebin.lee.work@gmail.com — genuinely love that kind of conversation.' },
+      { match: /collab|work together|team|partner/i,
+        ans: 'Definitely open to it. Whether it\'s a full-time role, a contract, or just an interesting project — send a note to sebin.lee.work@gmail.com and let\'s figure it out.' },
+    ];
+
+    const input = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('chatSend');
+    const resp = document.getElementById('chatResponse');
+
+    function showResponse(text) {
+      resp.textContent = text;
+      resp.classList.remove('visible');
+      void resp.offsetWidth;
+      resp.classList.add('visible');
+    }
+
+    function handleSend() {
+      const val = input.value.trim();
+      if (!val) return;
+      const qa = QA.find(r => r.match.test(val));
+      showResponse(qa ? qa.ans : 'Good question! Feel free to reach out directly at hello@sebin.design. I\'d love to chat.');
+      input.value = '';
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
+
+    // ── Case Study Overlay ──────────────────────────────────────
+    const overlay    = document.getElementById('cs-overlay');
+    const csContent  = document.getElementById('cs-content');
+    const csTopTitle = document.getElementById('cs-topbar-title');
+    const csClose    = document.getElementById('cs-close');
+
+    // Image placeholder helper
+    function img(label, cls = '') {
+      return `<div class="cs-img ${cls}"><span class="cs-img-label">${label}</span></div>`;
+    }
+
+    const CASE_STUDIES = {
+
+      kdd: {
+        title: 'KDD Rebrand',
+        dark: true,
+        content: `
+<div id="kdd-progress"></div>
+
+<!-- HERO -->
+<section class="kdd-hero">
+  <div class="kdd-hero-inner">
+    <div class="kdd-hero-label">Case study · KDD Rebrand</div>
+    <h1 class="kdd-hero-title">Giving KDD<br>a brand it deserved.</h1>
+    <div class="kdd-pills">
+      <span class="kdd-pill-dark">Rebrand</span>
+      <span class="kdd-pill">Brand Identity</span>
+      <span class="kdd-pill">Visual System</span>
+      <span class="kdd-pill">2026 · 4 months</span>
+      <span class="kdd-pill">Vancouver, BC</span>
+    </div>
+  </div>
+</section>
+
+<!-- PART 1: Overview + Challenge -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list" id="kdd-nav">
+        <li class="kdd-nav-item" data-target="overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item" data-target="concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item" data-target="logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item" data-target="color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item" data-target="application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item" data-target="outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <main class="kdd-content kdd-body">
+
+    <!-- 01 OVERVIEW -->
+    <section class="kdd-section" data-section="overview" id="kdd-overview">
+      <div class="kdd-section-label">01 · Overview</div>
+      <h2 class="kdd-section-title">About the Project</h2>
+      <div style="margin-bottom:40px;">
+        <div class="kdd-col-heading" style="font-size:18px;font-weight:600;color:var(--kdd-white);margin-bottom:8px;">The Community</div>
+        <p class="kdd-col-body" style="font-size:16px;margin-bottom:32px;">KDD was founded in 2017 by a Korean developer in Vancouver with one wish: a space where Koreans from different fields could meet, share, and grow together. Today KDD runs regular meetups, mentoring sessions, and an annual conference co-hosted with the Korean Consulate.</p>
+        <div class="kdd-col-heading" style="font-size:18px;font-weight:600;color:var(--kdd-white);margin-bottom:8px;">My Role</div>
+        <p class="kdd-col-body" style="font-size:16px;">As brand designer, I led the visual identity redesign end to end: defining the brand concept, designing the logo mark, establishing the color and type system, and producing templates for social media, events, and physical merchandise.</p>
+      </div>
+      <div class="kdd-stat-row">
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Role</div><div class="kdd-stat-card-value" style="font-size:14px;">Brand Designer</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Timeline</div><div class="kdd-stat-card-value" style="font-size:14px;">2026 · 4 months</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Deliverables</div><div class="kdd-stat-card-value" style="font-size:14px;">Logo · Color · Templates · Merch</div></div>
+      </div>
+      <div class="kdd-hero-cover" style="margin-top:40px;">
+        <img src="src/assets/kdd/thumbnail.png" alt="KDD Brand Identity" />
+      </div>
+    </section>
+
+    <!-- 02 CHALLENGE -->
+    <section class="kdd-section" data-section="challenge" id="kdd-challenge" style="padding-bottom:32px;">
+      <div class="kdd-section-label">02 · Challenge</div>
+      <h2 class="kdd-section-title">The Problem</h2>
+      <div class="kdd-pull-quote">
+        <p>"KDD had no unified visual identity. Every event, post, and printed piece looked different. This was especially critical ahead of their annual flagship event with the Korean Consulate."</p>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">01</div>
+        <div>
+          <div class="kdd-problem-title">Inconsistent Logo Usage</div>
+          <div class="kdd-problem-body">No defined rules for how the logo appeared across web, social, and print. This resulted in stretched, recolored, and misused versions everywhere.</div>
+        </div>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">02</div>
+        <div>
+          <div class="kdd-problem-title">No Color System</div>
+          <div class="kdd-problem-body">Event flyers used different palettes each time. There was no primary color, no secondary palette, and no rules for combination.</div>
+        </div>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">03</div>
+        <div>
+          <div class="kdd-problem-title">Typography Inconsistency</div>
+          <div class="kdd-problem-body">Korean and English type were treated separately with no hierarchy rules, causing visual noise across every touchpoint.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- 03 CONCEPT: SCROLL STORY inside kdd-layout -->
+<div class="kdd-layout kdd-scroll-story-wrap">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list">
+        <li class="kdd-nav-item" data-target="overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item active" data-target="concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item" data-target="logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item" data-target="color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item" data-target="application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item" data-target="outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <div class="kdd-content" style="padding:0;">
+<div class="kdd-scroll-story" id="kdd-concept" data-section="concept">
+  <div class="kdd-story-sticky">
+
+    <!-- LEFT: text that changes per step -->
+    <div class="kdd-story-left">
+      <div class="kdd-story-steps-wrap">
+
+        <div class="kdd-story-step active" data-step="0">
+          <div class="kdd-story-cat">03 · Concept</div>
+          <h2 class="kdd-story-h">One pixel.<br>One idea.</h2>
+          <p class="kdd-story-p">KDD began in Vancouver in 2017.<br>A single developer’s small hope to build something together.</p>
+        </div>
+
+        <div class="kdd-story-step" data-step="1">
+          <div class="kdd-story-cat">03 · Concept</div>
+          <h2 class="kdd-story-h">Pixels gather<br>and share.</h2>
+          <p class="kdd-story-bold">More people. More ideas. More energy.</p>
+          <p class="kdd-story-p">Those pixels didn’t stay alone.<br>They found each other, formed a cluster,<br>and started sharing what they knew.</p>
+        </div>
+
+        <div class="kdd-story-step" data-step="2">
+          <div class="kdd-story-cat">03 · Concept</div>
+          <h2 class="kdd-story-h">K:<br>The starting point.</h2>
+          <p class="kdd-story-bold">Every journey has an origin</p>
+          <p class="kdd-story-p">K is where it all begins.<br>The name, the identity, the first step<br>that sets everything else in motion.</p>
+        </div>
+
+        <div class="kdd-story-step" data-step="3">
+          <div class="kdd-story-cat">03 · Concept</div>
+          <h2 class="kdd-story-h">D:<br>Connection.</h2>
+          <p class="kdd-story-bold">Bridges between people, ideas, and opportunities</p>
+          <p class="kdd-story-p">The first D stands for the bonds formed.<br>Between developers and designers,<br>between strangers who became collaborators.</p>
+        </div>
+
+        <div class="kdd-story-step" data-step="4">
+          <div class="kdd-story-cat">03 · Concept</div>
+          <h2 class="kdd-story-h">D:<br>Expandability.</h2>
+          <p class="kdd-story-bold">Growing without losing what makes us us</p>
+          <p class="kdd-story-p">The second D is about scale.<br>A community built to grow outward,<br>welcoming more voices while staying rooted.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: visual panel -->
+    <div class="kdd-story-right">
+      <div class="kdd-vis-box">
+
+        <!-- Step 0: single pixel -->
+        <div class="kdd-vis-frame active" data-vis="0">
+          <div class="kdd-pixel-box"></div>
+        </div>
+
+        <!-- Step 1: pixels gather and share — system grid -->
+        <div class="kdd-vis-frame" data-vis="1">
+          <img class="kdd-letter-img" src="src/assets/kdd/system.png" alt="Pixels gathering" />
+        </div>
+
+        <!-- Step 2: K — identity, starting point -->
+        <div class="kdd-vis-frame" data-vis="2">
+          <img class="kdd-letter-img" src="src/assets/kdd/k.png" alt="K letterform" />
+        </div>
+
+        <!-- Step 3: D — connection -->
+        <div class="kdd-vis-frame" data-vis="3">
+          <img class="kdd-letter-img" src="src/assets/kdd/d.png" alt="D letterform" />
+        </div>
+
+        <!-- Step 4: D — expandability -->
+        <div class="kdd-vis-frame" data-vis="4">
+          <img class="kdd-letter-img" src="src/assets/kdd/d-2.png" alt="D2 letterform" />
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+  </div><!-- end kdd-content -->
+</div><!-- end kdd-layout for concept -->
+
+<!-- PART 2: Logo through Outcome -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list" id="kdd-nav-2">
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item kdd-nav-item-2" data-target="outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <main class="kdd-content kdd-body">
+
+    <!-- 04 LOGO -->
+    <section class="kdd-section" data-section="logo" id="kdd-logo">
+      <div class="kdd-section-label">04 · Logo</div>
+      <h2 class="kdd-section-title">Built on a Pixel Grid</h2>
+      <p class="kdd-body-text">The KDD wordmark is constructed on a precise pixel grid. The K carries a checkerboard pixel accent — referencing digital craft and the "first pixel" concept. Both D's use geometric arcs of increasing width, suggesting growth and momentum from left to right.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:40px;">
+        <div>
+          <div style="background:#F0EFED;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/logo-draft1.png" alt="Logo draft 1" style="width:100%;max-width:180px;display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Draft 1</div>
+          </div>
+        </div>
+        <div>
+          <div style="background:#F0EFED;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/logo-draft2.png" alt="Logo draft 2" style="width:100%;max-width:180px;display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Draft 2</div>
+          </div>
+        </div>
+        <div>
+          <div style="background:#5B3FFF;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/final-logo.png" alt="Final logo" style="width:100%;max-width:180px;filter:brightness(0) invert(1);display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Final</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 COLOR -->
+    <section class="kdd-section" data-section="color" id="kdd-color">
+      <div class="kdd-section-label">05 · Color</div>
+      <h2 class="kdd-section-title">The Palette</h2>
+      <p class="kdd-body-text">The primary palette is built around a vivid cobalt — a color that reads as both digital and authoritative, nodding to the tech sector without feeling corporate. It pairs with near-black and warm off-white for maximum contrast across all media.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:40px;">
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#5B3FFF;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:4px;">#5B3FFF</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Primary Cobalt</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#F47A49;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:4px;">#F47A49</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Accent Orange</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#0A0A0A;height:80px;border:1px solid var(--kdd-border);"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:4px;">#0A0A0A</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Near Black</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#F5F5F4;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:4px;">#F5F5F4</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Warm White</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 APPLICATION -->
+    <section class="kdd-section" data-section="application" id="kdd-application">
+      <div class="kdd-section-label">06 · Application</div>
+      <h2 class="kdd-section-title">Brand in the Wild</h2>
+      <p class="kdd-body-text">The identity system was rolled out across physical merchandise and event materials for the 6th Annual KDD Tech Conference 2026, co-hosted with the Korean Consulate.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;">
+        <div>
+          <img src="src/assets/kdd/kdd-black-front.png" alt="T-shirt front" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Merchandise</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Conference t-shirt, front</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/kdd-black-ver.png" alt="T-shirt back" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Merchandise</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Conference t-shirt, back</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/sticker-1.jpeg" alt="Sticker 1" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Sticker</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Event sticker set, vol. 1</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/sticker-2.jpeg" alt="Sticker 2" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-accent);margin-bottom:3px;">Sticker</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:12px;color:var(--kdd-muted);">Event sticker set, vol. 2</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 OUTCOME -->
+    <section class="kdd-section" data-section="outcome" id="kdd-outcome">
+      <div class="kdd-section-label">07 · Outcome</div>
+      <h2 class="kdd-section-title">What Shipped</h2>
+      <div style="margin-bottom:40px;">
+        <div class="kdd-col-heading" style="font-size:18px;font-weight:600;color:var(--kdd-white);margin-bottom:8px;">What We Achieved</div>
+        <p class="kdd-col-body" style="font-size:16px;margin-bottom:32px;">The rebrand launched at the 6th Annual KDD Tech Conference 2026, co-hosted with the Korean Consulate. KDD now has a consistent visual identity applied across social media and the conference — along with ready-to-use templates so anyone on the team can create social media posts, slides, or PowerPoint decks without starting from scratch.</p>
+        <div class="kdd-col-heading" style="font-size:18px;font-weight:600;color:var(--kdd-white);margin-bottom:8px;">What I Learned</div>
+        <p class="kdd-col-body" style="font-size:16px;">Designing for a volunteer-run community means every asset needs to work without a designer in the room. Making it reusable and approachable was just as important as making it look good.</p>
+      </div>
+      <div class="kdd-stat-row">
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Launch</div><div class="kdd-stat-card-value" style="font-size:14px;">KDD Conference 2026</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Deliverables</div><div class="kdd-stat-card-value" style="font-size:14px;">Social, Conference, Templates</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Duration</div><div class="kdd-stat-card-value" style="font-size:14px;">4 months · 2026</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="kdd-footer" style="justify-content:center;">
+  <span>© 2026 Sebin Lee</span>
+</footer>
+        `
+      },
+
+
+      balloons: {
+        title: 'Vancouver Balloons AI Builder',
+        content: `
+
+          <!-- ── HERO ─────────────────────────────────────────── -->
+          <div class="cs-label">Case Study · 003</div>
+          <h1 class="cs-title" style="max-width:14ch;">Designing and directing an AI-built order flow for a real balloon business</h1>
+          <div class="cs-meta">
+            <span class="cs-tag">AI Product Design</span>
+            <span class="cs-tag">Prompt Engineering</span>
+            <span class="cs-tag">React</span>
+            <span class="cs-tag">Figma</span>
+            <span class="cs-tag">Live Product</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:44px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+            <div style="padding:20px 0;border-right:1px solid var(--border);padding-right:20px;">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Role</div>
+              <div class="cs-meta-val">Designer + Director</div>
+            </div>
+            <div style="padding:20px 20px;border-right:1px solid var(--border);">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Timeframe</div>
+              <div class="cs-meta-val">2025</div>
+            </div>
+            <div style="padding:20px 20px;border-right:1px solid var(--border);">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Stack</div>
+              <div class="cs-meta-val">Claude API · React · Tailwind</div>
+            </div>
+            <div style="padding:20px 0 20px 20px;">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Status</div>
+              <div class="cs-meta-val" style="color:var(--vb-gold);">Live Product ↗</div>
+            </div>
+          </div>
+
+          <!-- ── EXECUTIVE SUMMARY ──────────────────────────────── -->
+          <div class="vb-summary cs-reveal">
+            <div class="vb-summary-cell">
+              <div class="vb-summary-label">Context</div>
+              <div class="vb-summary-body">— placeholder —</div>
+            </div>
+            <div class="vb-summary-cell">
+              <div class="vb-summary-label">Problem</div>
+              <div class="vb-summary-body">— placeholder —</div>
+            </div>
+            <div class="vb-summary-cell">
+              <div class="vb-summary-label">Approach</div>
+              <div class="vb-summary-body">— placeholder —</div>
+            </div>
+            <div class="vb-summary-cell">
+              <div class="vb-summary-label">Outcome</div>
+              <div class="vb-summary-body">— placeholder —</div>
+            </div>
+          </div>
+
+          <!-- ── STAT BLOCK ─────────────────────────────────────── -->
+          <div class="vb-stat-strip cs-reveal">
+            <div class="vb-stat-cell">
+              <div class="vb-stat-num">—</div>
+              <div class="vb-stat-desc">placeholder stat</div>
+            </div>
+            <div class="vb-stat-cell">
+              <div class="vb-stat-num">—</div>
+              <div class="vb-stat-desc">placeholder stat</div>
+            </div>
+            <div class="vb-stat-cell">
+              <div class="vb-stat-num">—</div>
+              <div class="vb-stat-desc">placeholder stat</div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 01 CONTEXT ─────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="context">01 · Context</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Single image slot -->
+            <div class="vb-media cs-reveal d3">
+              <div style="min-height:280px;display:flex;align-items:center;justify-content:center;">
+                <div class="vb-embed-placeholder">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                  <span>Image · Context</span>
+                </div>
+              </div>
+              <div class="vb-media-cap">
+                <div class="cs-photo-cap-title">— caption title —</div>
+                <div class="cs-photo-cap-sub">— caption sub —</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 02 PROBLEM ─────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="problem">02 · Problem</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Two-column image pair slot -->
+            <div class="vb-media-pair cs-reveal d3">
+              <div>
+                <div style="min-height:220px;display:flex;align-items:center;justify-content:center;">
+                  <div class="vb-embed-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    <span>Image A</span>
+                  </div>
+                </div>
+                <div class="vb-media-cap">
+                  <div class="cs-photo-cap-title">— Before —</div>
+                  <div class="cs-photo-cap-sub">— caption —</div>
+                </div>
+              </div>
+              <div>
+                <div style="min-height:220px;display:flex;align-items:center;justify-content:center;">
+                  <div class="vb-embed-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    <span>Image B</span>
+                  </div>
+                </div>
+                <div class="vb-media-cap">
+                  <div class="cs-photo-cap-title">— After —</div>
+                  <div class="cs-photo-cap-sub">— caption —</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 03 APPROACH ────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="approach">03 · Approach</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Embedded component slot -->
+            <div class="vb-embed cs-reveal d3">
+              <div class="vb-embed-placeholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span>Interactive component · Approach</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 04 DESIGN ──────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="design">04 · Design</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Single image slot -->
+            <div class="vb-media cs-reveal d3">
+              <div style="min-height:360px;display:flex;align-items:center;justify-content:center;">
+                <div class="vb-embed-placeholder">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                  <span>Image · Design screens</span>
+                </div>
+              </div>
+              <div class="vb-media-cap">
+                <div class="cs-photo-cap-title">— caption title —</div>
+                <div class="cs-photo-cap-sub">— caption sub —</div>
+              </div>
+            </div>
+
+            <p class="cs-p cs-reveal d4">— additional body text —</p>
+
+            <!-- Two-column image pair slot -->
+            <div class="vb-media-pair cs-reveal d5">
+              <div>
+                <div style="min-height:220px;display:flex;align-items:center;justify-content:center;">
+                  <div class="vb-embed-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    <span>Detail A</span>
+                  </div>
+                </div>
+                <div class="vb-media-cap">
+                  <div class="cs-photo-cap-title">— caption —</div>
+                  <div class="cs-photo-cap-sub">— sub —</div>
+                </div>
+              </div>
+              <div>
+                <div style="min-height:220px;display:flex;align-items:center;justify-content:center;">
+                  <div class="vb-embed-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    <span>Detail B</span>
+                  </div>
+                </div>
+                <div class="vb-media-cap">
+                  <div class="cs-photo-cap-title">— caption —</div>
+                  <div class="cs-photo-cap-sub">— sub —</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 05 AI LAYER ─────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="ai">05 · AI Layer</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Embedded interactive component (e.g. prompt flow diagram) -->
+            <div class="vb-embed cs-reveal d3" style="min-height:320px;">
+              <div class="vb-embed-placeholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                <span>Interactive · AI flow diagram</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── 06 OUTCOME ──────────────────────────────────────── -->
+          <div class="vb-section">
+            <div class="cs-section-label cs-reveal" data-cs-section="outcome">06 · Outcome</div>
+            <h2 class="cs-h2 cs-reveal d1">— placeholder headline —</h2>
+            <p class="cs-p cs-reveal d2">— placeholder body text —</p>
+
+            <!-- Single image slot -->
+            <div class="vb-media cs-reveal d3">
+              <div style="min-height:280px;display:flex;align-items:center;justify-content:center;">
+                <div class="vb-embed-placeholder">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  <span>Image · Live product</span>
+                </div>
+              </div>
+              <div class="vb-media-cap">
+                <div class="cs-photo-cap-title">— caption title —</div>
+                <div class="cs-photo-cap-sub">— caption sub —</div>
+              </div>
+            </div>
+
+            <p class="cs-p cs-reveal d4">— placeholder body text —</p>
+
+            <div style="padding:4px 0 4px 24px;border-left:2px solid var(--vb-gold);margin-top:32px;" class="cs-reveal d5">
+              <p class="cs-p" style="margin:0;color:#444;">— closing reflection placeholder —</p>
+            </div>
+          </div>
+
+        `
+      },
+
+      pictok: {
+        title: 'PicTok',
+        content: `
+
+          <!-- ── HERO ─────────────────────────────────────────── -->
+          <div class="cs-label">Case Study · 001</div>
+          <h1 class="cs-title">PicTok</h1>
+          <div class="cs-meta">
+            <span class="cs-tag">UX Research</span>
+            <span class="cs-tag">Product Design</span>
+            <span class="cs-tag">Accessibility</span>
+            <span class="cs-tag">Mobile App</span>
+            <span class="cs-tag">Figma</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:44px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+            <div style="padding:20px 0 20px;border-right:1px solid var(--border);padding-right:24px;">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Role</div>
+              <div class="cs-meta-val">UX Designer</div>
+            </div>
+            <div style="padding:20px 24px 20px;border-right:1px solid var(--border);">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Team</div>
+              <div class="cs-meta-val">4-person collaborative</div>
+            </div>
+            <div style="padding:20px 0 20px 24px;">
+              <div style="font-size:12px;color:#999;margin-bottom:8px;font-family:'Pretendard',sans-serif;font-weight:500;">Deliverables</div>
+              <div class="cs-meta-val">Research · Design System · Prototype</div>
+            </div>
+          </div>
+
+          <!-- Hero mockup -->
+          <div style="border-radius:20px;overflow:hidden;margin-bottom:48px;background:#F0F4FF;" class="cs-reveal">
+            <img src="src/assets/pictok/pictok_mockup.jpg" alt="PicTok app mockup" style="width:100%;display:block;object-fit:cover;" />
+          </div>
+
+          <!-- ── OVERVIEW ────────────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="overview">01 · Overview</div>
+          <h2 class="cs-h2 cs-reveal d1">Social media that<br>includes everyone.</h2>
+
+          <div class="cs-two cs-reveal d2">
+            <div>
+              <p class="cs-sub-heading">The Mission</p>
+              <p class="cs-p">PicTok is a photo-sharing app designed for visually impaired people. Capture moments, let AI recognize objects, and share unique audio experiences. Foster connections <span class="cs-hl">beyond sight.</span></p>
+              <p class="cs-p">PicTok is not just an app. It is a movement towards inclusivity — a platform where every image tells a story meant for everyone.</p>
+            </div>
+            <div>
+              <p class="cs-sub-heading">Three Core Pillars</p>
+              <p class="cs-p"><span class="cs-hl">Audio Storytelling</span> — create and share audio narratives alongside photos, building a more immersive connection with content.</p>
+              <p class="cs-p"><span class="cs-hl">Inclusive Design</span> — simple buttons and gestures designed first for visually impaired users, better for everyone.</p>
+              <p class="cs-p"><span class="cs-hl">Memory Sharing</span> — effortlessly connect and share meaningful experiences across the platform.</p>
+            </div>
+          </div>
+
+          <!-- Feature icons row -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px;" class="cs-reveal d3">
+            <div style="background:#F8F8F6;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;">
+              <img src="src/assets/pictok/audio.svg" alt="Audio" style="width:48px;height:48px;object-fit:contain;" />
+              <div>
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:6px;">Audio Storytelling</div>
+                <div style="font-size:13px;color:#777;font-family:'Pretendard',sans-serif;line-height:1.65;">Create rich audio narratives alongside every photo you share</div>
+              </div>
+            </div>
+            <div style="background:#F8F8F6;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;">
+              <img src="src/assets/pictok/design.svg" alt="Inclusive Design" style="width:48px;height:48px;object-fit:contain;" />
+              <div>
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:6px;">Inclusive Design</div>
+                <div style="font-size:13px;color:#777;font-family:'Pretendard',sans-serif;line-height:1.65;">Simple gestures and large targets built for accessibility from day one</div>
+              </div>
+            </div>
+            <div style="background:#F8F8F6;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;">
+              <img src="src/assets/pictok/share.svg" alt="Memory Sharing" style="width:48px;height:48px;object-fit:contain;" />
+              <div>
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:6px;">Memory Sharing</div>
+                <div style="font-size:13px;color:#777;font-family:'Pretendard',sans-serif;line-height:1.65;">Connect with friends and family around shared moments, not just images</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── RESEARCH ────────────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="research">02 · Research</div>
+          <h2 class="cs-h2 cs-reveal d1">A real gap,<br>a real audience.</h2>
+
+          <!-- Problem + Solution images -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;" class="cs-reveal d1">
+            <div style="background:#F8F8F6;border-radius:16px;overflow:hidden;">
+              <img src="src/assets/pictok/problem.svg" alt="Problem" style="width:100%;display:block;" />
+              <div style="padding:16px 20px 20px;">
+                <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;font-weight:500;margin-bottom:6px;">The Problem</div>
+                <p class="cs-p" style="margin:0;">In a visual social media landscape, young adults share experiences through images. Through scientific research, the team identified <span class="cs-hl">significant limitations for visually impaired teens</span> on current platforms, alongside a strong desire to participate in visual social culture.</p>
+              </div>
+            </div>
+            <div style="background:#F0F4FF;border-radius:16px;overflow:hidden;">
+              <img src="src/assets/pictok/solution.svg" alt="Solution" style="width:100%;display:block;" />
+              <div style="padding:16px 20px 20px;">
+                <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;font-weight:500;margin-bottom:6px;">The Solution</div>
+                <p class="cs-p" style="margin:0;">Go beyond basic accessibility. Simple buttons, intuitive gestures, and audio-first interactions that make the experience genuinely enjoyable — not just technically usable — for visually impaired people.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Persona -->
+          <p class="cs-sub-heading cs-reveal d2">Primary User Persona</p>
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:12px;background:#F8F8F6;" class="cs-reveal d3">
+            <img src="src/assets/pictok/primary_user.svg" alt="Primary user persona" style="width:100%;display:block;" />
+          </div>
+          <p class="cs-p cs-reveal d4" style="margin-bottom:48px;">Two personas guided every design decision: a <span class="cs-hl">primary user</span> — a visually impaired teenage girl who wants to participate in social media like her peers — and a <span class="cs-hl">secondary user</span> — a sighted friend or family member who shares content with her. Both perspectives shaped the interaction model.</p>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── IDEATION ────────────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="ideation">03 · Ideation</div>
+          <h2 class="cs-h2 cs-reveal d1">Map the journey<br>before designing it.</h2>
+
+          <div class="cs-two cs-reveal d1" style="margin-bottom:24px;">
+            <div>
+              <p class="cs-sub-heading">User Flow</p>
+              <p class="cs-p">Design emphasis on the <span class="cs-hl">Home, Inbox, and Camera pages</span>. The flowchart maps key functions on each page and how users navigate between them to complete core tasks — capturing a moment, sharing it, and responding to others.</p>
+            </div>
+            <div>
+              <p class="cs-sub-heading">Wireframes</p>
+              <p class="cs-p">Wireframes were built with accessibility as the primary constraint: large tap targets, high-contrast labels, minimal visual noise. These early screens let the team <span class="cs-hl">test the layout logic</span> before committing to color or visual polish.</p>
+            </div>
+          </div>
+
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:12px;background:#F8F8F6;" class="cs-reveal d2">
+            <img src="src/assets/pictok/userflow.svg" alt="User flow diagram" style="width:100%;display:block;" />
+            <div style="padding:12px 20px 16px;">
+              <div class="cs-photo-cap-title">User Flow · Home · Inbox · Camera</div>
+              <div class="cs-photo-cap-sub">Core task paths for visually impaired and sighted users</div>
+            </div>
+          </div>
+
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:48px;background:#F8F8F6;" class="cs-reveal d3">
+            <img src="src/assets/pictok/wireframe.svg" alt="Wireframes" style="width:100%;display:block;" />
+            <div style="padding:12px 20px 16px;">
+              <div class="cs-photo-cap-title">Lo-fi Wireframes</div>
+              <div class="cs-photo-cap-sub">Accessibility-first layout exploration before visual design</div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── DESIGN SYSTEM ──────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="design">04 · Design System</div>
+          <h2 class="cs-h2 cs-reveal d1">Every decision<br>has a reason.</h2>
+
+          <!-- Color -->
+          <p class="cs-sub-heading cs-reveal">Color</p>
+          <p class="cs-p cs-reveal d1" style="margin-bottom:28px;">Colors were selected considering how eyes register hues and how contrast reads for partial vision. Light and dark mode variants ensure inclusivity across different lighting conditions and <span class="cs-hl">individual visual needs</span>.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px;" class="cs-reveal d2">
+            <div style="background:#F8F8F6;border-radius:16px;padding:24px;">
+              <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;font-weight:600;letter-spacing:0.5px;margin-bottom:16px;">LIGHT MODE</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:#199DFC;flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;">#199DFC</div><div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;">Primary Blue</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:#FFB340;flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;">#FFB340</div><div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;">Secondary Amber</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,#FEFFC9,#C5E1F5);flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;">Sky Gradient</div><div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;">Background</div></div>
+                </div>
+              </div>
+            </div>
+            <div style="background:#1a1f2e;border-radius:16px;padding:24px;">
+              <div style="font-size:12px;color:rgba(255,255,255,0.4);font-family:'Pretendard',sans-serif;font-weight:600;letter-spacing:0.5px;margin-bottom:16px;">DARK MODE</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:#6C96F5;flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#fff;">#6C96F5</div><div style="font-size:12px;color:rgba(255,255,255,0.45);font-family:'Pretendard',sans-serif;">Primary Periwinkle</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:#FFF731;flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#fff;">#FFF731</div><div style="font-size:12px;color:rgba(255,255,255,0.45);font-family:'Pretendard',sans-serif;">Secondary Yellow</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,#F8F5F1,#89A4E2);flex-shrink:0;"></div>
+                  <div><div style="font-size:13px;font-family:'Pretendard',sans-serif;font-weight:600;color:#fff;">Dusk Gradient</div><div style="font-size:12px;color:rgba(255,255,255,0.45);font-family:'Pretendard',sans-serif;">Background</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typography -->
+          <p class="cs-sub-heading cs-reveal">Typography</p>
+          <p class="cs-p cs-reveal d1" style="margin-bottom:48px;">All headings and body text use <span class="cs-hl">Jost</span> — a geometric sans-serif that is naturally open and legible at large sizes. Font sizes are intentionally set larger than typical social apps to ensure readability for users with partial vision without requiring custom accessibility settings.</p>
+
+          <!-- Gestures -->
+          <p class="cs-sub-heading cs-reveal">Gesture Library</p>
+          <p class="cs-p cs-reveal d1" style="margin-bottom:24px;">PicTok uses only <span class="cs-hl">three gestures</span> throughout the entire app. The constraint is intentional: fewer interactions to memorize means faster mastery, which matters most for users who navigate by feel rather than sight.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px;" class="cs-reveal d2">
+            <div style="background:#F8F8F6;border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+              <img src="src/assets/pictok/tap.gif" alt="Tap gesture" style="width:80px;height:80px;object-fit:contain;" />
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:4px;">Tap</div>
+                <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;line-height:1.6;">Select and confirm any action</div>
+              </div>
+            </div>
+            <div style="background:#F8F8F6;border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+              <img src="src/assets/pictok/scroll.gif" alt="Scroll gesture" style="width:80px;height:80px;object-fit:contain;" />
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:4px;">Scroll</div>
+                <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;line-height:1.6;">Browse feed and content</div>
+              </div>
+            </div>
+            <div style="background:#F8F8F6;border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+              <img src="src/assets/pictok/swipe.gif" alt="Swipe gesture" style="width:80px;height:80px;object-fit:contain;" />
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-family:'Pretendard',sans-serif;font-weight:600;color:#0a0a0a;margin-bottom:4px;">Swipe</div>
+                <div style="font-size:12px;color:#999;font-family:'Pretendard',sans-serif;line-height:1.6;">Navigate between pages</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Atomic Design -->
+          <p class="cs-sub-heading cs-reveal">Atomic Design System</p>
+          <p class="cs-p cs-reveal d1" style="margin-bottom:24px;">PicTok adopted the <span class="cs-hl">Atomic Design methodology</span> — breaking every screen down to atoms, molecules, and organisms. This made accessibility updates faster: changing a button atom propagated automatically across every screen that used it.</p>
+
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:48px;background:#F8F8F6;" class="cs-reveal d2">
+            <img src="src/assets/pictok/atom_design.svg" alt="Atomic design system" style="width:100%;display:block;" />
+            <div style="padding:12px 20px 16px;">
+              <div class="cs-photo-cap-title">Component Library · Atomic Design</div>
+              <div class="cs-photo-cap-sub">Atoms built once, reused consistently across all screens</div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── VALIDATION ──────────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="validation">05 · Validation</div>
+          <h2 class="cs-h2 cs-reveal d1">We tested it.<br>We changed it.</h2>
+
+          <div class="cs-two cs-reveal d1" style="margin-bottom:24px;">
+            <div>
+              <p class="cs-sub-heading">Homepage Layout</p>
+              <p class="cs-p">The original layout grouped buttons in the center. After usability testing, the team moved to <span class="cs-hl">four-corner placement</span> — one button per corner — so users always know where to reach regardless of device orientation. The change sounds small, but it removed the most common error pattern observed in testing.</p>
+            </div>
+            <div>
+              <p class="cs-sub-heading">Inbox Labeling</p>
+              <p class="cs-p">Early inbox designs replaced the page title with the sender's name. VoiceOver users became disoriented because the page landmark changed. The fix: <span class="cs-hl">keep the page title fixed at top</span>, add sender info at bottom left. Two lines of hierarchy instead of one that overwrites itself.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:48px;" class="cs-reveal d2">
+            <div style="border-radius:16px;overflow:hidden;background:#F8F8F6;">
+              <img src="src/assets/pictok/validation1.svg" alt="Validation iteration 1" style="width:100%;display:block;" />
+              <div style="padding:12px 20px 16px;">
+                <div class="cs-photo-cap-title">Homepage · Iteration</div>
+                <div class="cs-photo-cap-sub">Before and after corner-button layout change</div>
+              </div>
+            </div>
+            <div style="border-radius:16px;overflow:hidden;background:#F8F8F6;">
+              <img src="src/assets/pictok/validation2.svg" alt="Validation iteration 2" style="width:100%;display:block;" />
+              <div style="padding:12px 20px 16px;">
+                <div class="cs-photo-cap-title">Inbox · Iteration</div>
+                <div class="cs-photo-cap-sub">Fixed page title with sender name added below</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-divider"></div>
+
+          <!-- ── OUTCOME ─────────────────────────────────────── -->
+          <div class="cs-section-label cs-reveal" data-cs-section="outcome">06 · Outcome</div>
+          <h2 class="cs-h2 cs-reveal d1">Prototype built.<br>App shipped.</h2>
+
+          <p class="cs-p cs-reveal d1" style="margin-bottom:32px;">The team delivered a <span class="cs-hl">fully functional prototype</span> and brought the app to life — complete with onboarding, audio capture, feed, and inbox. The promotional materials below were produced alongside the app to communicate PicTok's mission to a broader audience.</p>
+
+          <!-- Onboarding + merch -->
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:12px;background:#F0F4FF;" class="cs-reveal d2">
+            <img src="src/assets/pictok/Tutorial-1.png" alt="PicTok onboarding" style="width:100%;display:block;" />
+            <div style="padding:12px 20px 16px;">
+              <div class="cs-photo-cap-title">Onboarding · Tutorial Flow</div>
+              <div class="cs-photo-cap-sub">First-run experience introducing core gestures and features</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:48px;" class="cs-reveal d3">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <img src="src/assets/pictok/pictok_brochure.jpg" alt="PicTok brochure" style="width:100%;display:block;border-radius:14px;object-fit:cover;" />
+              <div style="padding:0 2px;">
+                <div class="cs-photo-cap-title">Promotional Brochure</div>
+                <div class="cs-photo-cap-sub">Communicating PicTok's mission and key features</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <img src="src/assets/pictok/pictok_businesscard.jpg" alt="PicTok business card" style="width:100%;display:block;border-radius:14px;object-fit:cover;" />
+              <div style="padding:0 2px;">
+                <div class="cs-photo-cap-title">Business Card</div>
+                <div class="cs-photo-cap-sub">Brand identity carried through to physical touchpoints</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-two cs-reveal d4">
+            <div>
+              <p class="cs-sub-heading">What Worked</p>
+              <p class="cs-p">Designing with hard constraints made us better. Every decision had to work for a visually impaired user first — and that discipline produced sharper, more deliberate choices that benefited everyone. The gesture library and audio-first hierarchy are examples of accessibility requirements that became defining product features.</p>
+            </div>
+            <div>
+              <p class="cs-sub-heading">What I'd Do Differently</p>
+              <p class="cs-p">I would have pushed for in-person usability testing with actual visually impaired participants earlier in the process. Simulated testing and research are useful starting points, but the most valuable feedback — the kind that changes your assumptions — only comes from the people you are actually designing for.</p>
+            </div>
+          </div>
+
+          <div class="bc-closing cs-reveal d5">
+            <p class="cs-p" style="margin:0;">"The best accessibility work is invisible. When it works, nobody notices the constraints that shaped it — they just feel like the app was made for them."</p>
+          </div>
+
+        `
+      }
+
+    };
+
+    function openCaseStudy(key) {
+      const study = CASE_STUDIES[key];
+      if (!study) return;
+
+      if (study.soon) {
+        csContent.innerHTML = `
+          <div class="cs-soon">
+            <div class="cs-soon-icon">✦</div>
+            <h2>${study.title}</h2>
+            <p>This case study is being written up.<br />Check back soon, or reach out directly and I'll walk you through it.</p>
+          </div>`;
+        overlay.classList.add('open');
+        overlay.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // Dark-theme studies (KDD) — full-bleed takeover
+      if (study.dark) {
+        overlay.innerHTML = `
+          <div class="cs-topbar">
+            <button class="cs-back" id="cs-close">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+              Back to work
+            </button>
+            <span class="cs-topbar-title" id="cs-topbar-title">${study.title}</span>
+          </div>
+          ${study.content}`;
+        overlay.classList.add('kdd-dark', 'open');
+        overlay.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+
+        document.getElementById('cs-close').addEventListener('click', closeCaseStudy);
+
+        // Section scroll observer → sidebar highlight + fade-in
+        const sections = overlay.querySelectorAll('[data-section]');
+        const navItems = overlay.querySelectorAll('.kdd-nav-item');
+
+        // fade-in observer (keep for .visible class)
+        const sectionIO = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { root: overlay, threshold: 0.05 });
+        sections.forEach(s => sectionIO.observe(s));
+
+        // sidebar active: whichever section's top is closest to (but above) 30% of viewport
+        function updateActiveNav() {
+          const overlayRect = overlay.getBoundingClientRect();
+          const threshold = overlayRect.top + overlay.clientHeight * 0.3;
+          let current = null;
+          sections.forEach(s => {
+            if (s.getBoundingClientRect().top <= threshold) current = s;
+          });
+          if (current) {
+            navItems.forEach(n => n.classList.toggle('active', n.dataset.target === current.dataset.section));
+          }
+        }
+        overlay.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+
+        // Sidebar nav click → smooth scroll
+        navItems.forEach(item => {
+          item.addEventListener('click', () => {
+            const target = overlay.querySelector('#kdd-' + item.dataset.target);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+
+        // Progress bar + topbar title on scroll
+        const progress = document.getElementById('kdd-progress');
+        const topTitle = document.getElementById('cs-topbar-title');
+
+        // Scroll story step tracker
+        const storyEl = overlay.querySelector('.kdd-scroll-story');
+        const storySteps = overlay.querySelectorAll('.kdd-story-step');
+        const storyVis   = overlay.querySelectorAll('.kdd-vis-frame');
+        let activeStep   = 0;
+        const NUM_STEPS  = 5;
+
+        const setStoryStep = (idx) => {
+          if (idx === activeStep) return;
+          activeStep = idx;
+          storySteps.forEach((s, i) => s.classList.toggle('active', i === idx));
+          storyVis.forEach((v, i)   => v.classList.toggle('active', i === idx));
+        };
+
+        const getOffsetInOverlay = (el) => {
+          let top = 0, cur = el;
+          while (cur && cur !== overlay) { top += cur.offsetTop; cur = cur.offsetParent; }
+          return top;
+        };
+
+        const onKddScroll = () => {
+          const pct = overlay.scrollTop / (overlay.scrollHeight - overlay.clientHeight) * 100;
+          if (progress) progress.style.width = pct + '%';
+          if (topTitle) topTitle.classList.toggle('visible', overlay.scrollTop > window.innerHeight * 0.6);
+
+          // Scroll story
+          if (storyEl) {
+            const storyTop  = getOffsetInOverlay(storyEl);
+            const into      = overlay.scrollTop - storyTop;
+            const vh        = overlay.clientHeight;
+            if (into < 0)                           setStoryStep(0);
+            else if (into >= vh * (NUM_STEPS - 1))  setStoryStep(NUM_STEPS - 1);
+            else                                     setStoryStep(Math.floor(into / vh));
+          }
+        };
+        overlay.addEventListener('scroll', onKddScroll, { passive: true });
+        overlay._cleanupScroll = () => { overlay.removeEventListener('scroll', onKddScroll); sectionIO.disconnect(); };
+        return;
+      }
+
+      csContent.innerHTML = study.content;
+      csTopTitle.textContent = study.title;
+      overlay.classList.add('open');
+      overlay.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+
+      // Build sidenav from sections present in this study
+      const sidenav = document.getElementById('cs-sidenav');
+      // Remove old items (keep the track line)
+      sidenav.querySelectorAll('.cs-sidenav-item').forEach(el => el.remove());
+
+      // ── Logo formation animation: one pixel → K → D → D ──────
+      function runLogoBuild(scene) {
+        const letters  = Array.from(scene.querySelectorAll('.lbs-letter'));
+        const originPx = scene.querySelector('.lbs-origin-pixel');
+        if (!letters.length || !originPx) return;
+
+        const W = scene.offsetWidth  || 700;
+        const H = scene.offsetHeight || 233;
+
+        // Place origin pixel at K's stem region (~14% across, 50% down)
+        originPx.style.left = Math.round(W * 0.14) + 'px';
+        originPx.style.top  = Math.round(H * 0.50) + 'px';
+        originPx.style.marginLeft = '-5px';
+        originPx.style.marginTop  = '-5px';
+
+        // Spawn floating pixel squares that simulate "pixel replication"
+        function spawnPixelSq(x, y, size, delay) {
+          const sq = document.createElement('div');
+          sq.className = 'lbs-pixel-sq';
+          sq.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;`;
+          scene.appendChild(sq);
+          setTimeout(() => {
+            sq.style.transition = 'opacity 60ms';
+            sq.style.opacity = '1';
+            setTimeout(() => {
+              sq.style.transition = 'opacity 120ms';
+              sq.style.opacity = '0';
+              setTimeout(() => sq.remove(), 150);
+            }, 180);
+          }, delay);
+        }
+
+        // Spawn flowing dots between two x-positions
+        function spawnFlowDots(fromXRatio, toXRatio, count, startDelay) {
+          const y0 = Math.round(H * 0.5);
+          for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+              const dot = document.createElement('div');
+              dot.className = 'lbs-dot';
+              const sx = Math.round(W * fromXRatio);
+              const ex = Math.round(W * toXRatio);
+              dot.style.left = sx + 'px';
+              dot.style.top  = (y0 - 3 + i * 7) + 'px';
+              dot.style.opacity = '0';
+              scene.appendChild(dot);
+              requestAnimationFrame(() => {
+                dot.style.transition = 'opacity 40ms';
+                dot.style.opacity = '1';
+                requestAnimationFrame(() => {
+                  dot.style.transition = `transform 180ms cubic-bezier(0.3,0,0.5,1), opacity 80ms 120ms`;
+                  dot.style.transform = `translateX(${ex - sx}px)`;
+                  dot.style.opacity = '0';
+                  setTimeout(() => dot.remove(), 250);
+                });
+              });
+            }, startDelay + i * 45);
+          }
+        }
+
+        // ── Phase 1: origin pixel appears + pulses (0–200ms) ──
+        setTimeout(() => {
+          originPx.style.transition = 'opacity 80ms, transform 100ms cubic-bezier(0.2,0,0,1)';
+          originPx.style.opacity = '1';
+          originPx.style.transform = 'scale(1)';
+        }, 0);
+        setTimeout(() => {
+          originPx.style.transition = 'transform 80ms cubic-bezier(0.2,0,0.5,1.5)';
+          originPx.style.transform = 'scale(2.2)';
+        }, 100);
+        setTimeout(() => {
+          originPx.style.transition = 'transform 70ms cubic-bezier(0.5,0,1,1)';
+          originPx.style.transform = 'scale(1)';
+        }, 180);
+
+        // ── Phase 2: pixel replication burst (200–600ms) ──
+        const pixelPositions = [
+          [0.10,0.3,4],[0.18,0.6,5],[0.22,0.2,3],[0.13,0.7,4],
+          [0.16,0.45,6],[0.20,0.55,3],[0.08,0.5,5],[0.25,0.35,4]
+        ];
+        pixelPositions.forEach(([xr, yr, sz], i) => {
+          spawnPixelSq(Math.round(W*xr), Math.round(H*yr), sz, 220 + i*30);
+        });
+
+        // ── Phase 3: flow dots K→D1 (500–900ms) ──
+        spawnFlowDots(0.18, 0.50, 4, 500);
+
+        // ── Phase 4: flow dots D1→D2 (900–1400ms) ──
+        spawnFlowDots(0.50, 0.82, 4, 900);
+
+        // ── Phase 5: letters reveal in sequence (600–2400ms) ──
+        setTimeout(() => {
+          letters.forEach((l, i) => {
+            setTimeout(() => {
+              l.style.transition = 'opacity 220ms ease, transform 280ms cubic-bezier(0.16,1,0.3,1)';
+              l.style.opacity = '1';
+              l.style.transform = 'translateY(0)';
+            }, i * 300);
+          });
+          // final pixel scatter
+          for (let i = 0; i < 6; i++) {
+            spawnPixelSq(
+              Math.round(W * (0.05 + Math.random() * 0.9)),
+              Math.round(H * (0.1 + Math.random() * 0.8)),
+              3 + Math.floor(Math.random() * 4),
+              i * 60
+            );
+          }
+          setTimeout(() => {
+            originPx.style.transition = 'opacity 200ms';
+            originPx.style.opacity = '0';
+          }, 360);
+        }, 2820);
+      }
+
+      // ── Scroll-driven brand concept story ──────────────────
+      const bcStages  = csContent.querySelectorAll('.bc-stage');
+      const bcPanels  = csContent.querySelectorAll('.bc-vis-panel');
+      const bcDots    = csContent.querySelectorAll('.bc-dot');
+      const bcStagesEl = csContent.querySelector('.bc-story-stages');
+      const bcVisual   = csContent.querySelector('.bc-story-visual');
+
+      let bcObserver = null;
+      let bcCurrentMode = 'unset'; // 'mobile' | 'desktop' | 'unset'
+
+      function teardownBc() {
+        if (bcObserver && bcObserver.disconnect) bcObserver.disconnect();
+        bcObserver = null;
+        // Remove any injected clones
+        if (bcStagesEl) bcStagesEl.querySelectorAll('.bc-mobile-clone').forEach(el => el.remove());
+      }
+
+      function setupBcMobile() {
+        if (bcVisual) bcVisual.style.display = 'none';
+        bcStages.forEach(stage => {
+          const num = stage.dataset.stage;
+          const panel = csContent.querySelector(`.bc-vis-panel[data-panel="${num}"]`);
+          if (!panel) return;
+          const clone = panel.cloneNode(true);
+          clone.classList.add('bc-active', 'bc-mobile-clone');
+          clone.style.cssText = `
+            position: relative; inset: auto;
+            opacity: 1; transform: none; pointer-events: auto;
+            width: 100%; aspect-ratio: 3/2;
+            max-height: 220px;
+            border-radius: 16px; margin-bottom: 16px;
+            background: #F8F8F6;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+          `;
+          clone.querySelectorAll('.bc-vis-letter').forEach(img => {
+            img.style.opacity = '1'; img.style.transform = 'none'; img.style.transition = 'none';
+          });
+          clone.querySelectorAll('.bc-vis-grid .gp').forEach(gp => {
+            gp.style.opacity = '1'; gp.style.transform = 'scale(1)'; gp.style.transition = 'none';
+          });
+          clone.querySelectorAll('.bc-vis-kdd img').forEach(img => {
+            img.style.opacity = '1'; img.style.transform = 'none'; img.style.transition = 'none';
+          });
+          bcStagesEl.insertBefore(clone, stage);
+        });
+        bcObserver = null;
+      }
+
+      function setupBcDesktop() {
+        if (bcVisual) bcVisual.style.display = '';
+        // Reset panels — show first one
+        bcPanels.forEach((p, i) => { p.classList.toggle('bc-active', i === 0); });
+        bcDots.forEach((d, i)   => { d.classList.toggle('bc-active', i === 0); });
+
+        function activateBcPanel(num) {
+          bcPanels.forEach(p => p.classList.remove('bc-active'));
+          bcDots.forEach(d   => d.classList.remove('bc-active'));
+          const panel = csContent.querySelector(`.bc-vis-panel[data-panel="${num}"]`);
+          const dot   = csContent.querySelector(`.bc-dot[data-dot="${num}"]`);
+          if (panel) panel.classList.add('bc-active');
+          if (dot)   dot.classList.add('bc-active');
+        }
+
+        bcObserver = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) activateBcPanel(e.target.dataset.stage); });
+        }, { root: overlay, threshold: 0.45 });
+
+        bcStages.forEach(s => bcObserver.observe(s));
+      }
+
+      function applyBcLayout() {
+        if (!bcStages.length) return; // no BC elements in this study
+        const newMode = window.matchMedia('(max-width: 900px)').matches ? 'mobile' : 'desktop';
+        if (newMode === bcCurrentMode) return; // no change
+        teardownBc();
+        if (newMode === 'mobile') { setupBcMobile(); }
+        else                      { setupBcDesktop(); }
+        bcCurrentMode = newMode;
+      }
+
+      applyBcLayout();
+
+      const bcMQ = window.matchMedia('(max-width: 900px)');
+      bcMQ.addEventListener('change', applyBcLayout);
+
+      // Clean up MQ listener when overlay closes
+      overlay.addEventListener('cs-closed', () => bcMQ.removeEventListener('change', applyBcLayout), { once: true });
+
+      // Wire up observer for logo-build scenes
+      const pixelCanvases = csContent.querySelectorAll('[data-logo-build]');
+      const pixelObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            runLogoBuild(e.target);
+            pixelObserver.unobserve(e.target);
+          }
+        });
+      }, { root: overlay, threshold: 0 });
+      pixelCanvases.forEach(c => pixelObserver.observe(c));
+
+      // Reveal animations for .cs-reveal elements
+      const revealEls = csContent.querySelectorAll('.cs-reveal');
+      const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); }
+        });
+      }, { root: overlay, threshold: 0.08 });
+      revealEls.forEach(el => revealObserver.observe(el));
+
+      // Highlight sweep for .cs-hl elements
+      const hlEls = csContent.querySelectorAll('.cs-hl');
+      const hlObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('in'); hlObserver.unobserve(e.target); }
+        });
+      }, { root: overlay, threshold: 0.5 });
+      hlEls.forEach(el => hlObserver.observe(el));
+
+      const sectionEls = csContent.querySelectorAll('[data-cs-section]');
+      let sectionObserver = null;
+
+      if (sectionEls.length > 0) {
+        sidenav.classList.add('visible');
+        overlay.classList.add('has-sidenav');
+        sectionEls.forEach(el => {
+          const id  = el.dataset.csSection;
+          // Pretty label from the element text (strip number prefix)
+          const raw = el.textContent.trim().replace(/^\d+\s*·\s*/,'');
+          const item = document.createElement('div');
+          item.className = 'cs-sidenav-item';
+          item.dataset.target = id;
+          item.innerHTML = `<span class="cs-sidenav-label">${raw}</span>`;
+          item.addEventListener('click', () => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          sidenav.appendChild(item);
+        });
+
+        // Mark first item active immediately
+        sidenav.querySelector('.cs-sidenav-item').classList.add('active');
+
+        // Track active section via IntersectionObserver
+        sectionObserver = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              const id = e.target.dataset.csSection;
+              sidenav.querySelectorAll('.cs-sidenav-item').forEach(n => {
+                n.classList.toggle('active', n.dataset.target === id);
+              });
+            }
+          });
+        }, { root: overlay, threshold: 0, rootMargin: '-20% 0px -65% 0px' });
+
+        sectionEls.forEach(s => sectionObserver.observe(s));
+      }
+
+      const onScroll = () => {
+        csTopTitle.classList.toggle('visible', overlay.scrollTop > 120);
+      };
+      overlay.addEventListener('scroll', onScroll, { passive: true });
+      overlay._cleanupScroll = () => {
+        overlay.removeEventListener('scroll', onScroll);
+        if (sectionObserver) sectionObserver.disconnect();
+        revealObserver.disconnect();
+        hlObserver.disconnect();
+        pixelObserver.disconnect();
+        if (bcObserver) bcObserver.disconnect();
+      };
+    }
+
+    function closeCaseStudy() {
+      overlay.classList.remove('open', 'kdd-dark');
+      document.body.style.overflow = '';
+      if (overlay._cleanupScroll) { overlay._cleanupScroll(); overlay._cleanupScroll = null; }
+      // Restore standard overlay structure if dark study replaced innerHTML
+      if (!document.getElementById('cs-content')) {
+        overlay.innerHTML = `
+          <div class="cs-topbar">
+            <button class="cs-back" id="cs-close">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+              Back to work
+            </button>
+            <span class="cs-topbar-title" id="cs-topbar-title"></span>
+          </div>
+          <div class="cs-body" id="cs-content"></div>`;
+        document.getElementById('cs-close').addEventListener('click', closeCaseStudy);
+      }
+      // Clear sidenav if present
+      const sn = document.getElementById('cs-sidenav');
+      if (sn) { sn.classList.remove('visible'); sn.querySelectorAll('.cs-sidenav-item').forEach(el => el.remove()); }
+      overlay.classList.remove('has-sidenav');
+    }
+
+    // Wire up all CTA buttons
+    document.querySelectorAll('.project-cta[data-project]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        if (btn.dataset.project === 'kdd') {
+          window.location.href = 'kdd.html';
+        } else if (btn.dataset.project === 'balloons') {
+          window.location.href = 'balloons.html';
+        } else if (btn.dataset.project === 'pictok') {
+          window.location.href = 'pictok.html';
+        } else {
+          openCaseStudy(btn.dataset.project);
+        }
+      });
+    });
+
+    // Close button + Escape key
+    csClose.addEventListener('click', closeCaseStudy);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeCaseStudy(); });
+
+  </script>
+</body>
+</html>

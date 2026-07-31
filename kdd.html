@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KDD Rebrand · Sebin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/overused-grotesk@5.0.3/index.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --kdd-bg:      #F8F7F5;
+      --kdd-surface: #FFFFFF;
+      --kdd-border:  #E5E4E1;
+      --kdd-accent:  #4B3BFF;
+      --kdd-white:   #0F0F0E;
+      --kdd-muted:   #6B6B67;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--kdd-bg);
+      color: var(--kdd-white);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      padding: 0 clamp(24px, 4vw, 60px);
+      background: rgba(255,255,255,0);
+      transition: background 0.35s ease, border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: rgba(0,0,0,0.09);
+    }
+    .nav-inner {
+      max-width: min(1400px, 92vw);
+      margin: 0 auto;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 700; font-size: 16px;
+      color: var(--kdd-white);
+      text-decoration: none; letter-spacing: -0.2px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--kdd-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--kdd-border);
+      background: rgba(255,255,255,0.72);
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--kdd-white); border-color: rgba(0,0,0,0.18); background: #fff; }
+
+    /* ── PROGRESS BAR ─────────────────────────────────────────── */
+    #kdd-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--kdd-accent);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .kdd-hero {
+      padding: 112px 0 80px;
+      border-bottom: 1px solid var(--kdd-border);
+    }
+    .kdd-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .kdd-hero-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 24px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-hero-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(36px,5.5vw,64px);
+      font-weight: 500;
+      line-height: 1.0;
+      color: var(--kdd-white);
+      margin: 0 0 40px;
+      letter-spacing: -1.2px;
+    }
+    .kdd-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .kdd-pill {
+      border: 1px solid var(--kdd-border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      color: var(--kdd-muted);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-pill-dark {
+      background: var(--kdd-white);
+      color: var(--kdd-bg);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────────── */
+    .kdd-layout {
+      display: flex;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+    }
+
+    /* ── SIDEBAR ──────────────────────────────────────────────── */
+    .kdd-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      display: flex;
+      align-items: flex-start;
+      padding-top: 80px;
+      padding-left: 8px;
+    }
+    .kdd-sidebar-inner { position: relative; padding-left: 20px; }
+    .kdd-sidebar-line {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--kdd-border);
+    }
+    .kdd-sidebar-project {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      margin-bottom: 28px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .kdd-nav-item {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      color: #444;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 0.3s;
+      position: relative;
+      user-select: none;
+    }
+    .kdd-nav-item:hover { color: #888; }
+    .kdd-nav-item.active { color: var(--kdd-accent); font-weight: 500; }
+    .kdd-nav-dot {
+      position: absolute;
+      left: -24px; top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--kdd-accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .kdd-nav-item.active .kdd-nav-dot { opacity: 1; }
+
+    /* ── CONTENT ──────────────────────────────────────────────── */
+    .kdd-content { flex: 1; min-width: 0; padding: 0 0 160px 40px; }
+
+    /* ── SECTIONS ─────────────────────────────────────────────── */
+    .kdd-section {
+      padding: clamp(64px,8vw,120px) 0;
+      border-top: 1px solid var(--kdd-border);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .kdd-section:first-child { border-top: none; }
+    .kdd-section.visible { opacity: 1; transform: translateY(0); }
+    .kdd-scroll-story-wrap { margin-top: -48px; }
+
+    .kdd-section-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 12px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-section-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(22px,2.8vw,32px);
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 20px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .kdd-body-text {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+    .kdd-col-heading {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 8px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-col-body {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.6;
+    }
+    .kdd-mark { background: rgba(75,59,255,0.09); border-radius: 3px; padding: 1px 4px; color: var(--kdd-white); }
+
+    @media (min-width: 1400px) {
+      .kdd-hero-inner, .kdd-layout { max-width: 1280px; }
+    }
+
+    /* ── STAT CARDS ───────────────────────────────────────────── */
+    .kdd-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 40px; }
+    .kdd-stat-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .kdd-stat-card-label {
+      font-size: 13px;
+      color: var(--kdd-accent);
+      margin-bottom: 10px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .kdd-stat-card-value {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      line-height: 1.2;
+    }
+
+    /* ── HERO COVER ───────────────────────────────────────────── */
+    .kdd-hero-cover { width: 100%; border-radius: 16px; overflow: hidden; }
+    .kdd-hero-cover img { width: 100%; height: auto; display: block; }
+
+    /* ── PULL QUOTE ───────────────────────────────────────────── */
+    .kdd-pull-quote { border-left: 3px solid var(--kdd-accent); padding: 8px 0 8px 32px; margin: 48px 0; }
+    .kdd-pull-quote p {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(18px,2.5vw,26px);
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--kdd-white);
+    }
+
+    /* ── PROBLEM ROWS ─────────────────────────────────────────── */
+    .kdd-problem-row { display: flex; align-items: flex-start; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--kdd-border); }
+    .kdd-problem-num { font-family: 'Pretendard', sans-serif; font-size: 36px; color: var(--kdd-accent); opacity: 0.4; width: 52px; flex-shrink: 0; line-height: 1; padding-top: 2px; }
+    .kdd-problem-title { font-size: 16px; font-weight: 500; color: var(--kdd-white); margin-bottom: 6px; font-family: 'Overused Grotesk', 'Pretendard', sans-serif; }
+    .kdd-problem-body { font-size: 16px; color: var(--kdd-muted); line-height: 1.6; font-family: 'Overused Grotesk', 'Pretendard', sans-serif; }
+
+    /* ── SCROLL STORY ─────────────────────────────────────────── */
+    .kdd-scroll-story { height: 500vh; position: relative; }
+    .kdd-story-sticky {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      display: flex;
+      overflow: hidden;
+      background: var(--kdd-bg);
+    }
+    .kdd-story-left {
+      width: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 clamp(20px,3vw,48px) 0 40px;
+      text-align: left;
+    }
+    .kdd-story-steps-wrap { position: relative; width: 100%; min-height: 300px; }
+    .kdd-story-step {
+      position: absolute; top: 50%; left: 0;
+      transform: translateY(calc(-50% + 12px));
+      width: 100%; opacity: 0;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+    .kdd-story-step.active { opacity: 1; transform: translateY(-50%); pointer-events: auto; }
+    .kdd-story-cat { font-size: 15px; color: var(--kdd-muted); margin-bottom: 16px; font-family: 'Overused Grotesk', 'Pretendard', sans-serif; }
+    .kdd-story-h { font-family: 'Overused Grotesk', 'Pretendard', sans-serif; font-size: clamp(26px,3vw,42px); font-weight: 500; color: var(--kdd-white); line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .kdd-story-bold { font-family: 'Overused Grotesk', 'Pretendard', sans-serif; font-size: 16px; font-weight: 600; color: var(--kdd-white); margin-bottom: 8px; line-height: 1.5; }
+    .kdd-story-p { font-family: 'Overused Grotesk', 'Pretendard', sans-serif; font-size: 16px; color: var(--kdd-muted); line-height: 1.6; }
+    .kdd-story-right { flex: 1; display: flex; align-items: center; justify-content: center; }
+    .kdd-vis-box { position: relative; width: min(72%, 380px); aspect-ratio: 1; background: #EFEFED; border-radius: 20px; overflow: hidden; }
+    .kdd-vis-frame { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.55s ease; }
+    .kdd-vis-frame.active { opacity: 1; }
+    .kdd-pixel-box { width: min(35%, 180px); aspect-ratio: 1; background: #0F0F0E; }
+    .kdd-letter-img { width: min(50%, 240px); height: auto; display: block; }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .kdd-footer {
+      border-top: 1px solid var(--kdd-border);
+      padding: 32px clamp(24px,6vw,80px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      letter-spacing: 0.02em;
+    }
+    .kdd-footer a { color: var(--kdd-muted); text-decoration: none; transition: color 0.2s; }
+    .kdd-footer a:hover { color: var(--kdd-white); }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 840px) {
+      .kdd-sidebar { display: none; }
+      .kdd-content { padding-left: 0; }
+      .kdd-stat-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .kdd-stat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  <style>
+    #lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; cursor:zoom-out; }
+    #lightbox.open { display:flex; }
+    #lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px; box-shadow:0 24px 80px rgba(0,0,0,0.5); }
+    #lightbox-close { position:fixed; top:20px; right:24px; color:#fff; font-size:28px; cursor:pointer; line-height:1; opacity:0.7; }
+    #lightbox-close:hover { opacity:1; }
+    .kdd-img-block img { cursor:zoom-in; }
+  </style>
+</head>
+<body>
+
+<div id="kdd-progress"></div>
+
+<!-- TOP BAR -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="font-weight:500;font-size:13.5px;color:var(--kdd-muted);display:inline-flex;align-items:center;gap:6px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      Back to work
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#contact" style="color:#E8581A;border-color:rgba(232,88,26,0.25);">Available ✦</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="kdd-hero">
+  <div class="kdd-hero-inner">
+    <div class="kdd-hero-label">Case study · KDD Rebrand</div>
+    <h1 class="kdd-hero-title">Giving KDD<br>a brand it deserved.</h1>
+    <div class="kdd-pills">
+      <span class="kdd-pill">Rebrand</span>
+      <span class="kdd-pill">Brand Identity</span>
+      <span class="kdd-pill">Visual System</span>
+      <span class="kdd-pill">2026 · 4 months</span>
+      <span class="kdd-pill">Vancouver, BC</span>
+    </div>
+  </div>
+</section>
+
+<!-- PART 1: Overview + Challenge -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list" id="kdd-nav">
+        <li class="kdd-nav-item" data-target="kdd-overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="kdd-challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item" data-target="kdd-concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item" data-target="kdd-logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item" data-target="kdd-color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item" data-target="kdd-application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item" data-target="kdd-outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <main class="kdd-content">
+
+    <!-- 01 OVERVIEW -->
+    <section class="kdd-section" data-section="overview" id="kdd-overview">
+      <div class="kdd-section-label">01 · Overview</div>
+      <h2 class="kdd-section-title">About the Project</h2>
+      <div style="margin-bottom:40px;">
+        <div class="kdd-col-heading">The Community</div>
+        <p class="kdd-col-body" style="margin-bottom:32px;">KDD was founded in 2017 by a Korean developer in Vancouver with one wish: a space where Koreans from different fields could meet, share, and grow together. Today KDD runs regular meetups, mentoring sessions, and an annual conference co-hosted with the Korean Consulate.</p>
+        <div class="kdd-col-heading">My Role</div>
+        <p class="kdd-col-body">As brand designer, I <span class="kdd-mark">led the visual identity redesign end to end</span>: defining the brand concept, designing the logo mark, establishing the color and type system, and producing templates for social media, events, and physical merchandise.</p>
+      </div>
+      <div class="kdd-stat-row">
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Role</div><div class="kdd-stat-card-value">Brand Designer</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Timeline</div><div class="kdd-stat-card-value">2026 · 4 months</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Deliverables</div><div class="kdd-stat-card-value">Logo · Color · Templates · Merch</div></div>
+      </div>
+      <div class="kdd-hero-cover" style="margin-top:40px;">
+        <img src="src/assets/kdd/thumbnail.png" alt="KDD Brand Identity" />
+      </div>
+    </section>
+
+    <!-- 02 CHALLENGE -->
+    <section class="kdd-section" data-section="challenge" id="kdd-challenge" style="padding-bottom:32px;">
+      <div class="kdd-section-label">02 · Challenge</div>
+      <h2 class="kdd-section-title">The Problem</h2>
+      <div class="kdd-pull-quote">
+        <p>"KDD had no unified visual identity. Every event, post, and printed piece looked different. This was especially critical ahead of their annual flagship event with the Korean Consulate."</p>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">01</div>
+        <div>
+          <div class="kdd-problem-title">Inconsistent Logo Usage</div>
+          <div class="kdd-problem-body">No defined rules for how the logo appeared across web, social, and print. This resulted in stretched, recolored, and misused versions everywhere.</div>
+        </div>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">02</div>
+        <div>
+          <div class="kdd-problem-title">No Color System</div>
+          <div class="kdd-problem-body">Event flyers used different palettes each time. There was no primary color, no secondary palette, and no rules for combination.</div>
+        </div>
+      </div>
+      <div class="kdd-problem-row">
+        <div class="kdd-problem-num">03</div>
+        <div>
+          <div class="kdd-problem-title">Typography Inconsistency</div>
+          <div class="kdd-problem-body">Korean and English type were treated separately with no hierarchy rules, causing visual noise across every touchpoint.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- 03 CONCEPT: SCROLL STORY -->
+<div class="kdd-layout kdd-scroll-story-wrap">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list">
+        <li class="kdd-nav-item" data-target="kdd-overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="kdd-challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item active" data-target="kdd-concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item" data-target="kdd-logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item" data-target="kdd-color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item" data-target="kdd-application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item" data-target="kdd-outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <div class="kdd-content" style="padding:0;">
+    <div class="kdd-scroll-story" id="kdd-concept" data-section="concept">
+      <div class="kdd-story-sticky">
+        <div class="kdd-story-left">
+          <div class="kdd-story-steps-wrap">
+            <div class="kdd-story-step active" data-step="0">
+              <div class="kdd-story-cat">03 · Concept</div>
+              <h2 class="kdd-story-h">One pixel.<br>One idea.</h2>
+              <p class="kdd-story-p">KDD began in Vancouver in 2017.<br>A single developer's small hope to build something together.</p>
+            </div>
+            <div class="kdd-story-step" data-step="1">
+              <div class="kdd-story-cat">03 · Concept</div>
+              <h2 class="kdd-story-h">Pixels gather<br>and share.</h2>
+              <p class="kdd-story-bold">More people. More ideas. More energy.</p>
+              <p class="kdd-story-p">Those pixels didn't stay alone.<br>They found each other, formed a cluster,<br>and started sharing what they knew.</p>
+            </div>
+            <div class="kdd-story-step" data-step="2">
+              <div class="kdd-story-cat">03 · Concept</div>
+              <h2 class="kdd-story-h">K:<br>The starting point.</h2>
+              <p class="kdd-story-bold">Every journey has an origin</p>
+              <p class="kdd-story-p">K is where it all begins.<br>The name, the identity, the first step<br>that sets everything else in motion.</p>
+            </div>
+            <div class="kdd-story-step" data-step="3">
+              <div class="kdd-story-cat">03 · Concept</div>
+              <h2 class="kdd-story-h">D:<br>Connection.</h2>
+              <p class="kdd-story-bold">Bridges between people, ideas, and opportunities</p>
+              <p class="kdd-story-p">The first D stands for the bonds formed.<br>Between developers and designers,<br>between strangers who became collaborators.</p>
+            </div>
+            <div class="kdd-story-step" data-step="4">
+              <div class="kdd-story-cat">03 · Concept</div>
+              <h2 class="kdd-story-h">D:<br>Expandability.</h2>
+              <p class="kdd-story-bold">Growing without losing what makes us us</p>
+              <p class="kdd-story-p">The second D is about scale.<br>A community built to grow outward,<br>welcoming more voices while staying rooted.</p>
+            </div>
+          </div>
+        </div>
+        <div class="kdd-story-right">
+          <div class="kdd-vis-box">
+            <div class="kdd-vis-frame active" data-vis="0"><div class="kdd-pixel-box"></div></div>
+            <div class="kdd-vis-frame" data-vis="1"><img class="kdd-letter-img" src="src/assets/kdd/system.png" alt="Pixels gathering" /></div>
+            <div class="kdd-vis-frame" data-vis="2"><img class="kdd-letter-img" src="src/assets/kdd/k.png" alt="K letterform" /></div>
+            <div class="kdd-vis-frame" data-vis="3"><img class="kdd-letter-img" src="src/assets/kdd/d.png" alt="D letterform" /></div>
+            <div class="kdd-vis-frame" data-vis="4"><img class="kdd-letter-img" src="src/assets/kdd/d-2.png" alt="D2 letterform" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 2: Logo → Outcome -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">KDD</div>
+      <ul class="kdd-nav-list">
+        <li class="kdd-nav-item" data-target="kdd-overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="kdd-challenge"><span class="kdd-nav-dot"></span>02 Challenge</li>
+        <li class="kdd-nav-item" data-target="kdd-concept"><span class="kdd-nav-dot"></span>03 Concept</li>
+        <li class="kdd-nav-item" data-target="kdd-logo"><span class="kdd-nav-dot"></span>04 Logo</li>
+        <li class="kdd-nav-item" data-target="kdd-color"><span class="kdd-nav-dot"></span>05 Color</li>
+        <li class="kdd-nav-item" data-target="kdd-application"><span class="kdd-nav-dot"></span>06 Application</li>
+        <li class="kdd-nav-item" data-target="kdd-outcome"><span class="kdd-nav-dot"></span>07 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+  <main class="kdd-content">
+
+    <!-- 04 LOGO -->
+    <section class="kdd-section" data-section="logo" id="kdd-logo">
+      <div class="kdd-section-label">04 · Logo</div>
+      <h2 class="kdd-section-title">Built on a Pixel Grid</h2>
+      <p class="kdd-body-text">The KDD wordmark is constructed on a <span class="kdd-mark">precise pixel grid</span>. The K carries a checkerboard pixel accent referencing digital craft and the "first pixel" concept. Both D's use geometric arcs of increasing width, suggesting growth and momentum from left to right.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:40px;">
+        <div>
+          <div style="background:#F0EFED;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/logo-draft1.png" alt="Logo draft 1" style="width:100%;max-width:180px;display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:13px;color:var(--kdd-muted);">Draft 1</div>
+          </div>
+        </div>
+        <div>
+          <div style="background:#F0EFED;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/logo-draft2.png" alt="Logo draft 2" style="width:100%;max-width:180px;display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:13px;color:var(--kdd-muted);">Draft 2</div>
+          </div>
+        </div>
+        <div>
+          <div style="background:#5B3FFF;border-radius:10px 10px 0 0;padding:24px;display:flex;align-items:center;justify-content:center;min-height:140px;">
+            <img src="src/assets/kdd/final-logo.png" alt="Final logo" style="width:100%;max-width:180px;filter:brightness(0) invert(1);display:block;" />
+          </div>
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Logo</div>
+            <div style="font-family:'Pretendard',sans-serif;font-size:13px;color:var(--kdd-muted);">Final</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 COLOR -->
+    <section class="kdd-section" data-section="color" id="kdd-color">
+      <div class="kdd-section-label">05 · Color</div>
+      <h2 class="kdd-section-title">The Palette</h2>
+      <p class="kdd-body-text">The primary palette is built around a vivid cobalt, a color that reads as both digital and authoritative, nodding to the tech sector without feeling corporate. It pairs with near-black and warm off-white for maximum contrast across all media.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:40px;">
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#5B3FFF;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:4px;">#5B3FFF</div>
+            <div style="font-size:13px;color:#888;">Primary Cobalt</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#F47A49;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:4px;">#F47A49</div>
+            <div style="font-size:13px;color:#888;">Accent Orange</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#0A0A0A;height:80px;border:1px solid var(--kdd-border);"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:4px;">#0A0A0A</div>
+            <div style="font-size:13px;color:#888;">Near Black</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;">
+          <div style="background:#F5F5F4;height:80px;"></div>
+          <div style="background:var(--kdd-surface);border:1px solid var(--kdd-border);padding:14px 16px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:4px;">#F5F5F4</div>
+            <div style="font-size:13px;color:#888;">Warm White</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 APPLICATION -->
+    <section class="kdd-section" data-section="application" id="kdd-application">
+      <div class="kdd-section-label">06 · Application</div>
+      <h2 class="kdd-section-title">Brand in the Wild</h2>
+      <p class="kdd-body-text">The identity system was rolled out across physical merchandise and event materials for the 6th Annual KDD Tech Conference 2026, co-hosted with the Korean Consulate.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;">
+        <div>
+          <img src="src/assets/kdd/kdd-black-front.png" alt="T-shirt front" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Merchandise</div>
+            <div style="font-size:13px;color:var(--kdd-muted);">Conference t-shirt, front</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/kdd-black-ver.png" alt="T-shirt back" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Merchandise</div>
+            <div style="font-size:13px;color:var(--kdd-muted);">Conference t-shirt, back</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/sticker-1.jpeg" alt="Sticker 1" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Sticker</div>
+            <div style="font-size:13px;color:var(--kdd-muted);">Event sticker set, vol. 1</div>
+          </div>
+        </div>
+        <div>
+          <img src="src/assets/kdd/sticker-2.jpeg" alt="Sticker 2" style="width:100%;border-radius:10px 10px 0 0;display:block;" />
+          <div style="border:1px solid var(--kdd-border);border-radius:0 0 10px 10px;padding:12px 14px;margin-top:-4px;">
+            <div style="font-family:'Pretendard',sans-serif;font-size:14px;color:var(--kdd-accent);margin-bottom:3px;">Sticker</div>
+            <div style="font-size:13px;color:var(--kdd-muted);">Event sticker set, vol. 2</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 OUTCOME -->
+    <section class="kdd-section" data-section="outcome" id="kdd-outcome">
+      <div class="kdd-section-label">07 · Outcome</div>
+      <h2 class="kdd-section-title">What Shipped</h2>
+      <div style="margin-bottom:40px;">
+        <div class="kdd-col-heading">What We Achieved</div>
+        <p class="kdd-col-body" style="margin-bottom:32px;">The rebrand launched at the <span class="kdd-mark">6th Annual KDD Tech Conference 2026</span>, co-hosted with the Korean Consulate. KDD now has a consistent visual identity applied across social media and the conference, along with ready-to-use templates so anyone on the team can create social media posts, slides, or PowerPoint decks without starting from scratch.</p>
+        <div class="kdd-col-heading">What I Learned</div>
+        <p class="kdd-col-body">Every asset needed to work beyond the initial launch. Making the system <span class="kdd-mark">reusable and handoff-ready</span> was just as important as making it look good.</p>
+      </div>
+      <div class="kdd-stat-row">
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Launch</div><div class="kdd-stat-card-value">KDD Conference 2026</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Deliverables</div><div class="kdd-stat-card-value">Social, Conference, Templates</div></div>
+        <div class="kdd-stat-card"><div class="kdd-stat-card-label">Duration</div><div class="kdd-stat-card-value">4 months · 2026</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<footer class="kdd-footer" style="justify-content:center;">
+  <span>© 2026 Sebin Lee</span>
+</footer>
+
+<script>
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.kdd-img-block img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  // Progress bar
+  const progress = document.getElementById('kdd-progress');
+  const topTitle = null;
+
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    if (progress) progress.style.width = pct + '%';
+    if (topTitle) topTitle.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+  }, { passive: true });
+
+  // Section fade-in
+  const sections = document.querySelectorAll('[data-section]');
+  const sectionIO = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  sections.forEach(s => sectionIO.observe(s));
+
+  // Sidebar active nav
+  const allNavItems = document.querySelectorAll('.kdd-nav-item');
+  function updateActiveNav() {
+    const threshold = window.innerHeight * 0.3;
+    let current = null;
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top <= threshold) current = s;
+    });
+    if (current) {
+      allNavItems.forEach(n => n.classList.toggle('active', n.dataset.target === 'kdd-' + current.dataset.section));
+    }
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  // Sidebar nav click → smooth scroll
+  allNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Scroll story step tracker
+  const storyEl    = document.querySelector('.kdd-scroll-story');
+  const storySteps = document.querySelectorAll('.kdd-story-step');
+  const storyVis   = document.querySelectorAll('.kdd-vis-frame');
+  let activeStep   = 0;
+  const NUM_STEPS  = 5;
+
+  const setStoryStep = (idx) => {
+    if (idx === activeStep) return;
+    activeStep = idx;
+    storySteps.forEach((s, i) => s.classList.toggle('active', i === idx));
+    storyVis.forEach((v, i)   => v.classList.toggle('active', i === idx));
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!storyEl) return;
+    const storyTop = storyEl.getBoundingClientRect().top + window.scrollY;
+    const into     = window.scrollY - storyTop;
+    const vh       = window.innerHeight;
+    if (into < 0)                          setStoryStep(0);
+    else if (into >= vh * (NUM_STEPS - 1)) setStoryStep(NUM_STEPS - 1);
+    else                                   setStoryStep(Math.floor(into / vh));
+  }, { passive: true });
+</script>
+</body>
+</html>

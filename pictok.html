@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PicTok · Sebin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/overused-grotesk@5.0.3/index.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --kdd-bg:      #F8F7F5;
+      --kdd-surface: #FFFFFF;
+      --kdd-border:  #E5E4E1;
+      --kdd-accent:  #4B3BFF;
+      --kdd-white:   #0F0F0E;
+      --kdd-muted:   #6B6B67;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--kdd-bg);
+      color: var(--kdd-white);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      padding: 0 clamp(24px, 4vw, 60px);
+      background: rgba(255,255,255,0);
+      transition: background 0.35s ease, border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: rgba(0,0,0,0.09);
+    }
+    .nav-inner {
+      max-width: min(1400px, 92vw);
+      margin: 0 auto;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 700; font-size: 16px;
+      color: var(--kdd-white);
+      text-decoration: none; letter-spacing: -0.2px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--kdd-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--kdd-border);
+      background: rgba(255,255,255,0.72);
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--kdd-white); border-color: rgba(0,0,0,0.18); background: #fff; }
+
+    /* ── PROGRESS BAR ─────────────────────────────────────────── */
+    #cs-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--kdd-accent);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .kdd-hero {
+      padding: 112px 0 80px;
+      border-bottom: 1px solid var(--kdd-border);
+    }
+    .kdd-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .kdd-hero-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 24px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-hero-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(36px,5.5vw,64px);
+      font-weight: 500;
+      line-height: 1.0;
+      color: var(--kdd-white);
+      margin: 0 0 16px;
+      letter-spacing: -1.2px;
+    }
+    .kdd-hero-sub {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(15px,1.8vw,18px);
+      color: var(--kdd-muted);
+      line-height: 1.55;
+      max-width: 54ch;
+      margin-bottom: 40px;
+    }
+    .kdd-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .kdd-pill {
+      border: 1px solid var(--kdd-border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      color: var(--kdd-muted);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-pill-dark {
+      background: var(--kdd-white);
+      color: var(--kdd-bg);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────────── */
+    .kdd-layout {
+      display: flex;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+    }
+
+    /* ── SIDEBAR ──────────────────────────────────────────────── */
+    .kdd-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      display: flex;
+      align-items: flex-start;
+      padding-top: 80px;
+      padding-left: 8px;
+    }
+    .kdd-sidebar-inner { position: relative; padding-left: 20px; }
+    .kdd-sidebar-line {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--kdd-border);
+    }
+    .kdd-sidebar-project {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--kdd-muted);
+      margin-bottom: 28px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .kdd-nav-item {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13px;
+      color: #444;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 0.3s;
+      position: relative;
+      user-select: none;
+    }
+    .kdd-nav-item:hover { color: #888; }
+    .kdd-nav-item.active { color: var(--kdd-accent); font-weight: 500; }
+    .kdd-nav-dot {
+      position: absolute;
+      left: -24px; top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--kdd-accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .kdd-nav-item.active .kdd-nav-dot { opacity: 1; }
+
+    /* ── CONTENT ──────────────────────────────────────────────── */
+    .kdd-content { flex: 1; min-width: 0; padding: 0 0 160px 40px; }
+
+    /* ── SECTIONS ─────────────────────────────────────────────── */
+    .kdd-section {
+      padding: clamp(64px,8vw,120px) 0;
+      border-top: 1px solid var(--kdd-border);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .kdd-section:first-child { border-top: none; }
+    .kdd-section.visible { opacity: 1; transform: translateY(0); }
+
+    .kdd-section-label {
+      font-size: 15px;
+      color: var(--kdd-muted);
+      margin-bottom: 12px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-section-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(22px,2.8vw,32px);
+      font-weight: 500;
+      color: var(--kdd-white);
+      margin-bottom: 20px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .kdd-body-text {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+    .kdd-col-heading {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 8px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+    }
+    .kdd-col-body {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--kdd-muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    /* ── STAT CARDS ───────────────────────────────────────────── */
+    .kdd-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 40px; }
+    .kdd-stat-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .kdd-stat-card-label {
+      font-size: 13px;
+      color: var(--kdd-accent);
+      margin-bottom: 10px;
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .kdd-stat-card-value {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      line-height: 1.2;
+    }
+
+    /* ── TWO-COL GRID ─────────────────────────────────────────── */
+    .kdd-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    /* ── PHOTO CAPTIONS ───────────────────────────────────────── */
+    .kdd-photo-cap-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kdd-white);
+      font-family: 'Pretendard', sans-serif;
+      margin-bottom: 3px;
+    }
+    .kdd-photo-cap-sub {
+      font-size: 13px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* ── HIGHLIGHT ────────────────────────────────────────────── */
+    .kdd-hl { font-weight: 600; color: var(--kdd-white); }
+    .kdd-mark { background: rgba(75,59,255,0.09); border-radius: 3px; padding: 1px 4px; color: var(--kdd-white); }
+
+    @media (min-width: 1400px) {
+      .kdd-hero-inner, .kdd-layout { max-width: 1280px; }
+    }
+
+    /* ── PULL QUOTE ───────────────────────────────────────────── */
+    .kdd-pull-quote { border-left: 3px solid var(--kdd-accent); padding: 8px 0 8px 32px; margin: 48px 0; }
+    .kdd-pull-quote p {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(16px,2.2vw,22px);
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--kdd-white);
+    }
+
+    /* ── FEATURE ICON CARDS ───────────────────────────────────── */
+    .kdd-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .kdd-feature-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .kdd-feature-card img { width: 48px; height: 48px; object-fit: contain; }
+    .kdd-feature-title {
+      font-size: 14px;
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 600;
+      color: var(--kdd-white);
+      margin-bottom: 6px;
+    }
+    .kdd-feature-body {
+      font-size: 16px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── COLOR PALETTE CARDS ──────────────────────────────────── */
+    .kdd-palette-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .kdd-palette-card {
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .kdd-palette-card.light { background: #F8F8F6; }
+    .kdd-palette-card.dark  { background: #1a1f2e; }
+    .kdd-palette-mode {
+      font-size: 12px;
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .kdd-palette-card.light .kdd-palette-mode { color: #999; }
+    .kdd-palette-card.dark  .kdd-palette-mode { color: rgba(255,255,255,0.4); }
+    .kdd-swatch-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .kdd-swatch-row:last-child { margin-bottom: 0; }
+    .kdd-swatch { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; }
+    .kdd-swatch-label-hex {
+      font-size: 13px;
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .kdd-palette-card.light .kdd-swatch-label-hex { color: #0a0a0a; }
+    .kdd-palette-card.dark  .kdd-swatch-label-hex { color: #fff; }
+    .kdd-swatch-label-name {
+      font-size: 12px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .kdd-palette-card.light .kdd-swatch-label-name { color: #999; }
+    .kdd-palette-card.dark  .kdd-swatch-label-name { color: rgba(255,255,255,0.45); }
+
+    /* ── GESTURE CARDS ────────────────────────────────────────── */
+    .kdd-gesture-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+    .kdd-gesture-card {
+      background: var(--kdd-surface);
+      border: 1px solid var(--kdd-border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .kdd-gesture-card img { width: 120px; height: 120px; object-fit: contain; }
+    .kdd-gesture-name {
+      font-size: 14px;
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 600;
+      color: var(--kdd-white);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .kdd-gesture-desc {
+      font-size: 12px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── IMAGE BLOCK ──────────────────────────────────────────── */
+    .kdd-img-block {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid var(--kdd-border);
+    }
+    .kdd-img-block img { width: 100%; display: block; }
+    .kdd-img-cap {
+      padding: 12px 16px 14px;
+      border-top: 1px solid var(--kdd-border);
+    }
+
+    /* ── RESEARCH ROWS ────────────────────────────────────────── */
+    .kdd-research-row {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .kdd-research-img {
+      width: 200px;
+      flex-shrink: 0;
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--kdd-border);
+      border-bottom: none;
+    }
+    .kdd-research-img img { width: 100%; display: block; }
+    .kdd-research-img-cap {
+      width: 200px;
+      flex-shrink: 0;
+      border: 1px solid var(--kdd-border);
+      border-radius: 0 0 10px 10px;
+      padding: 8px 12px 10px;
+      margin-top: -1px;
+    }
+    .kdd-research-text { flex: 1; padding-top: 4px; }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .kdd-footer {
+      border-top: 1px solid var(--kdd-border);
+      padding: 32px clamp(24px,6vw,80px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--kdd-muted);
+      font-family: 'Pretendard', sans-serif;
+      letter-spacing: 0.02em;
+    }
+    .kdd-footer a { color: var(--kdd-muted); text-decoration: none; transition: color 0.2s; }
+    .kdd-footer a:hover { color: var(--kdd-white); }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 840px) {
+      .kdd-sidebar { display: none; }
+      .kdd-content { padding-left: 0; }
+      .kdd-stat-row { grid-template-columns: 1fr 1fr; }
+      .kdd-two { grid-template-columns: 1fr; gap: 24px; }
+      .kdd-feature-grid { grid-template-columns: 1fr; }
+      .kdd-gesture-grid { grid-template-columns: 1fr; }
+      .kdd-palette-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .kdd-stat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cs-progress"></div>
+
+<!-- TOP BAR -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="font-weight:500;font-size:13.5px;color:var(--kdd-muted);display:inline-flex;align-items:center;gap:6px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      Back to work
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#contact" style="color:#E8581A;border-color:rgba(232,88,26,0.25);">Available ✦</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="kdd-hero">
+  <div class="kdd-hero-inner">
+    <div class="kdd-hero-label">Case study · PicTok</div>
+    <h1 class="kdd-hero-title">PicTok</h1>
+    <p class="kdd-hero-sub">A photo-sharing app designed for visually impaired people. Capture moments, let AI recognize objects, and share unique audio experiences. Foster connections beyond sight.</p>
+    <div class="kdd-pills">
+      <span class="kdd-pill">Accessibility</span>
+      <span class="kdd-pill">UX Research</span>
+      <span class="kdd-pill">Product Design</span>
+      <span class="kdd-pill">Mobile App</span>
+      <span class="kdd-pill">Figma</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">PicTok</div>
+      <ul class="kdd-nav-list" id="cs-nav">
+        <li class="kdd-nav-item" data-target="pictok-overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="pictok-research"><span class="kdd-nav-dot"></span>02 Research</li>
+        <li class="kdd-nav-item" data-target="pictok-ideation"><span class="kdd-nav-dot"></span>03 Ideation</li>
+        <li class="kdd-nav-item" data-target="pictok-design"><span class="kdd-nav-dot"></span>04 Design</li>
+        <li class="kdd-nav-item" data-target="pictok-validation"><span class="kdd-nav-dot"></span>05 Validation</li>
+        <li class="kdd-nav-item" data-target="pictok-outcome"><span class="kdd-nav-dot"></span>06 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="kdd-content">
+
+    <!-- STAT BAR -->
+    <div class="kdd-stat-row" style="margin-top:clamp(48px,6vw,80px);">
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Role</div><div class="kdd-stat-card-value">Lead UX Designer</div></div>
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Team</div><div class="kdd-stat-card-value">4-person collaborative</div></div>
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Deliverables</div><div class="kdd-stat-card-value">Research · Design System · Prototype</div></div>
+    </div>
+
+    <!-- Hero mockup -->
+    <div style="border-radius:20px;overflow:hidden;margin-bottom:clamp(48px,6vw,80px);background:#F0F4FF;">
+      <img src="src/assets/pictok/pictok_mockup.jpg" alt="PicTok app mockup" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <!-- 01 OVERVIEW -->
+    <section class="kdd-section" data-section="overview" id="pictok-overview">
+      <div class="kdd-section-label">01 · Overview</div>
+      <h2 class="kdd-section-title">PicTok is not just an app.<br>It is a movement towards inclusivity.</h2>
+      <p class="kdd-body-text">PicTok's mission is to provide a platform where <span class="kdd-mark">every image tells a story meant for everyone</span>.</p>
+
+      <div class="kdd-feature-grid">
+        <div class="kdd-feature-card">
+          <img src="src/assets/pictok/audio.svg" alt="Audio Storytelling" />
+          <div>
+            <div class="kdd-feature-title">Audio Storytelling</div>
+            <div class="kdd-feature-body">PicTok allows users to create and share audio narratives alongside their photos, fostering a more immersive and personal connection with the shared content.</div>
+          </div>
+        </div>
+        <div class="kdd-feature-card">
+          <img src="src/assets/pictok/design.svg" alt="Inclusive Design" />
+          <div>
+            <div class="kdd-feature-title">Inclusive Design</div>
+            <div class="kdd-feature-body">PicTok goes beyond basic accessibility, with simple buttons and gestures, ensuring an inclusive and user-friendly experience for visually impaired people in social media.</div>
+          </div>
+        </div>
+        <div class="kdd-feature-card">
+          <img src="src/assets/pictok/share.svg" alt="Memory Sharing" />
+          <div>
+            <div class="kdd-feature-title">Memory Sharing</div>
+            <div class="kdd-feature-body">PicTok enables social connections and memory sharing, ensuring visually impaired users can effortlessly connect with others and share meaningful experiences within the platform.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 RESEARCH -->
+    <section class="kdd-section" data-section="research" id="pictok-research">
+      <div class="kdd-section-label">02 · Research &amp; Analysis</div>
+      <h2 class="kdd-section-title">A real gap,<br>a real audience.</h2>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
+        <!-- Problem card -->
+        <div style="background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid var(--kdd-border);display:flex;align-items:center;">
+          <div style="width:140px;flex-shrink:0;padding:24px;display:flex;align-items:center;justify-content:center;">
+            <img src="src/assets/pictok/problem.svg" alt="Problem" style="width:100px;height:100px;display:block;object-fit:contain;" />
+          </div>
+          <div style="padding:24px 28px;display:flex;flex-direction:column;justify-content:center;">
+            <p class="kdd-col-heading" style="margin-bottom:8px;">Problem</p>
+            <p class="kdd-col-body" style="margin-bottom:0;font-size:16px;">In a visual social media landscape, young adults share experiences through images. Through reviewing scientific research, the PicTok team observed real limitations for visually impaired teens on current photo-sharing platforms. Teenagers in particular wanted to actively participate in the visual culture of social media, but the tools weren't built for them.</p>
+          </div>
+        </div>
+        <!-- Solution card -->
+        <div style="background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid var(--kdd-border);display:flex;align-items:center;">
+          <div style="width:140px;flex-shrink:0;padding:24px;display:flex;align-items:center;justify-content:center;">
+            <img src="src/assets/pictok/solution.svg" alt="Solution" style="width:100px;height:100px;display:block;object-fit:contain;" />
+          </div>
+          <div style="padding:24px 28px;display:flex;flex-direction:column;justify-content:center;">
+            <p class="kdd-col-heading" style="margin-bottom:8px;">Solution</p>
+            <p class="kdd-col-body" style="margin-bottom:0;font-size:16px;">PicTok goes beyond basic accessibility, with simple buttons and gestures, ensuring an inclusive and user-friendly experience for visually impaired people in social media.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona -->
+      <p class="kdd-col-heading" style="margin-bottom:12px;">User Personas</p>
+      <p class="kdd-body-text">Based on the research, the team created two user personas. The <span class="kdd-hl">primary user</span> is <span class="kdd-mark">a teenage girl who is visually impaired</span>. The <span class="kdd-hl">secondary user</span> is <span class="kdd-mark">a friend or family member of the primary user</span>.</p>
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/pictok/primary_user.svg" alt="Primary user persona" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Primary User Persona</div>
+          <div class="kdd-photo-cap-sub">Teenage girl with visual impairment — core audience for PicTok</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 IDEATION -->
+    <section class="kdd-section" data-section="ideation" id="pictok-ideation">
+      <div class="kdd-section-label">03 · Ideation</div>
+      <h2 class="kdd-section-title">Simple &amp; easy<br>userflow for VIPs.</h2>
+
+      <div class="kdd-two" style="margin-bottom:32px;">
+        <div>
+          <p class="kdd-col-heading">User Flow</p>
+          <p class="kdd-col-body">Addressing the requirements of VIPs and integrating preferences from sighted individuals, the design emphasis is on the Home, Inbox, and Camera pages. The flowchart visually depicts key functions on each page and outlines user navigation for task completion in the app.</p>
+        </div>
+        <div>
+          <p class="kdd-col-heading">Wireframe</p>
+          <p class="kdd-col-body">Upon finalizing the app's key features, the team transitioned to the design phase, crafting wireframes with a keen focus on accessibility through a simple layout and user-centered design. These visual guides enabled the team to envision how each page would seamlessly integrate essential information.</p>
+        </div>
+      </div>
+
+      <div class="kdd-img-block" style="background:#F8F8F6;margin-bottom:12px;">
+        <img src="src/assets/pictok/userflow.svg" alt="User flow diagram" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">User Flow · Home · Inbox · Camera</div>
+          <div class="kdd-photo-cap-sub">Core task paths for visually impaired and sighted users</div>
+        </div>
+      </div>
+
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/pictok/wireframe.svg" alt="Wireframes" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Lo-fi Wireframes</div>
+          <div class="kdd-photo-cap-sub">Accessibility-first layout exploration before visual design</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 DESIGN -->
+    <section class="kdd-section" data-section="design" id="pictok-design">
+      <div class="kdd-section-label">04 · Design</div>
+      <h2 class="kdd-section-title">Every decision<br>has a reason.</h2>
+
+      <!-- Color -->
+      <p class="kdd-col-heading" style="margin-bottom:8px;">Color</p>
+      <p class="kdd-body-text">In prioritizing accessibility, the team carefully selected colors easily recognized by the visually impaired, considering contrast and how eyes register the hues. The team created <span class="kdd-mark">variations for both light and dark modes</span> to ensure inclusivity.</p>
+
+      <div class="kdd-palette-grid">
+        <div class="kdd-palette-card light" style="border:1px solid var(--kdd-border);background:#FFFFFF;">
+          <div class="kdd-palette-mode">LIGHT</div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:#199DFC;"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">#199DFC</div>
+              <div class="kdd-swatch-label-name">Primary Blue</div>
+            </div>
+          </div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:#FFB340;"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">#FFB340</div>
+              <div class="kdd-swatch-label-name">Secondary Amber</div>
+            </div>
+          </div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:linear-gradient(180deg,#FEFFC9,#C5E1F5);"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">Sky Gradient</div>
+              <div class="kdd-swatch-label-name">Background</div>
+            </div>
+          </div>
+        </div>
+        <div class="kdd-palette-card dark">
+          <div class="kdd-palette-mode">DARK</div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:#6C96F5;"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">#6C96F5</div>
+              <div class="kdd-swatch-label-name">Primary Periwinkle</div>
+            </div>
+          </div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:#FFF731;"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">#FFF731</div>
+              <div class="kdd-swatch-label-name">Secondary Yellow</div>
+            </div>
+          </div>
+          <div class="kdd-swatch-row">
+            <div class="kdd-swatch" style="background:linear-gradient(180deg,#F8F5F1,#89A4E2);"></div>
+            <div>
+              <div class="kdd-swatch-label-hex">Dusk Gradient</div>
+              <div class="kdd-swatch-label-name">Background</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <p class="kdd-col-heading" style="margin-bottom:8px;">Typography</p>
+      <p class="kdd-body-text">Heading and body paragraph sizes are intentionally larger. The font <span class="kdd-hl">Jost</span> was chosen for its naturally wide letterforms and strong legibility, which helps visually impaired users recognize and read text more easily.</p>
+
+      <!-- Gestures -->
+      <p class="kdd-col-heading" style="margin-bottom:8px;">Easy Gestures</p>
+      <p class="kdd-body-text">PicTok prioritizes simplicity by incorporating intuitive gestures, ensuring an effortless user experience for VIPs.</p>
+
+      <div class="kdd-gesture-grid">
+        <div class="kdd-gesture-card">
+          <img src="src/assets/pictok/tap.gif" alt="Tap gesture" />
+          <div>
+            <div class="kdd-gesture-name">Tap</div>
+            <div class="kdd-gesture-desc">Select and confirm any action</div>
+          </div>
+        </div>
+        <div class="kdd-gesture-card">
+          <img src="src/assets/pictok/scroll.gif" alt="Scroll gesture" />
+          <div>
+            <div class="kdd-gesture-name">Scroll</div>
+            <div class="kdd-gesture-desc">Browse feed and content</div>
+          </div>
+        </div>
+        <div class="kdd-gesture-card">
+          <img src="src/assets/pictok/swipe.gif" alt="Swipe gesture" />
+          <div>
+            <div class="kdd-gesture-name">Swipe</div>
+            <div class="kdd-gesture-desc">Navigate between pages</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Atomic Design -->
+      <p class="kdd-col-heading" style="margin-bottom:8px;">Adopting Atomic Design System</p>
+      <p class="kdd-body-text">During the design phase, PicTok adopted the <span class="kdd-mark">Atomic Design System</span>. They broke down each page into tiny parts called <span class="kdd-hl">"atoms."</span> This helped the team easily update changes and make organized designs.</p>
+
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/pictok/atom_design.svg" alt="Atomic design system" style="padding:32px;" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Component Library · Atomic Design</div>
+          <div class="kdd-photo-cap-sub">Atoms built once, reused consistently across all screens</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 VALIDATION -->
+    <section class="kdd-section" data-section="validation" id="pictok-validation">
+      <div class="kdd-section-label">05 · Validation</div>
+      <h2 class="kdd-section-title">We tested it.<br>We changed it.</h2>
+
+      <div class="kdd-two" style="margin-bottom:24px;">
+        <div>
+          <p class="kdd-col-heading">Homepage</p>
+          <p class="kdd-col-body">The design team iterated on the home page, originally with four buttons in a different layout and sizes. After usability testing and additional research, the team opted for a layout with buttons placed at the four corners. This arrangement ensures accessibility for visually impaired people in both horizontal and vertical device orientations.</p>
+        </div>
+        <div>
+          <p class="kdd-col-heading">Inbox</p>
+          <p class="kdd-col-body">PicTok continually refined the inbox. Instead of replacing the page name with the sender's name, the page name was retained at the top and the sender's name was added at the bottom left. This approach prevents user confusion during voice-over functions. Additionally, animated icons were incorporated for dynamic elements, enhancing the user experience.</p>
+        </div>
+      </div>
+
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/pictok/validation1.svg" alt="Homepage iteration" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Homepage · Iteration</div>
+          <div class="kdd-photo-cap-sub">Before and after corner-button layout change</div>
+        </div>
+      </div>
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/pictok/validation2.svg" alt="Inbox iteration" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Inbox · Iteration</div>
+          <div class="kdd-photo-cap-sub">Fixed page title with sender name added below</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 OUTCOME -->
+    <section class="kdd-section" data-section="outcome" id="pictok-outcome">
+      <div class="kdd-section-label">06 · Outcome</div>
+      <h2 class="kdd-section-title">Prototype built.<br>App shipped.</h2>
+
+      <p class="kdd-body-text">Throughout this journey, PicTok crafted the entire prototype and <span class="kdd-mark">brought the functional app to life</span>. Here's a demonstration of the app and promotional merch.</p>
+
+      <div class="kdd-img-block" style="background:#FFFFFF;margin-bottom:12px;">
+        <div style="padding:32px;display:flex;align-items:center;justify-content:center;">
+          <video autoplay loop muted playsinline style="width:100%;max-width:160px;display:block;">
+            <source src="src/assets/pictok/pictok_screen_record.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Live App Demo</div>
+          <div class="kdd-photo-cap-sub">Screen recording of the working app — built and shipped by the team</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:48px;">
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/pictok/pictok_brochure.jpg" alt="PicTok brochure" style="width:100%;display:block;object-fit:cover;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Promotional Brochure</div>
+            <div class="kdd-photo-cap-sub">Communicating PicTok's mission and key features</div>
+          </div>
+        </div>
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/pictok/pictok_businesscard.jpg" alt="PicTok business card" style="width:100%;display:block;object-fit:cover;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Business Card</div>
+            <div class="kdd-photo-cap-sub">Brand identity carried through to physical touchpoints</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kdd-pull-quote">
+        <p>"The best accessibility work is invisible. When it works, nobody notices the constraints that shaped it — they just feel like the app was made for them."</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="kdd-footer" style="justify-content:center;">
+  <span>© 2026 Sebin Lee</span>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  const progress = document.getElementById('cs-progress');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    if (progress) progress.style.width = pct + '%';
+  }, { passive: true });
+
+  // Section fade-in
+  const sections = document.querySelectorAll('[data-section]');
+  const sectionIO = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  sections.forEach(s => sectionIO.observe(s));
+
+  // Sidebar active nav
+  const allNavItems = document.querySelectorAll('.kdd-nav-item');
+  function updateActiveNav() {
+    const threshold = window.innerHeight * 0.3;
+    let current = null;
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top <= threshold) current = s;
+    });
+    if (current) {
+      allNavItems.forEach(n => n.classList.toggle('active', n.dataset.target === 'pictok-' + current.dataset.section));
+    }
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  // Sidebar nav click → smooth scroll
+  allNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

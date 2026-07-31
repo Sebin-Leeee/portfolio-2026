@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vancouver Balloons AI Builder · Sebin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/overused-grotesk@5.0.3/index.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --kdd-bg:      #F8F7F5;
+      --kdd-surface: #FFFFFF;
+      --kdd-border:  #E5E4E1;
+      --kdd-accent:  #4B3BFF;
+      --kdd-white:   #0F0F0E;
+      --kdd-muted:   #6B6B67;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--kdd-bg);
+      color: var(--kdd-white);
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      padding: 0 clamp(24px, 4vw, 60px);
+      background: rgba(255,255,255,0);
+      transition: background 0.35s ease, border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: rgba(0,0,0,0.09);
+    }
+    .nav-inner {
+      max-width: min(1400px, 92vw);
+      margin: 0 auto;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-weight: 700; font-size: 16px;
+      color: var(--kdd-white);
+      text-decoration: none; letter-spacing: -0.2px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--kdd-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--kdd-border);
+      background: rgba(255,255,255,0.72);
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--kdd-white); border-color: rgba(0,0,0,0.18); background: #fff; }
+
+    /* ── PROGRESS BAR ─────────────────────────────────────────── */
+    #cs-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: var(--kdd-accent); z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .kdd-hero { padding: 112px 0 80px; border-bottom: 1px solid var(--kdd-border); }
+    .kdd-hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px);
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .kdd-hero-label { font-size: 15px; color: var(--kdd-muted); margin-bottom: 24px; }
+    .kdd-hero-title {
+      font-family: 'Overused Grotesk', 'Pretendard', sans-serif;
+      font-size: clamp(36px,5.5vw,64px); font-weight: 500;
+      line-height: 1.0; color: var(--kdd-white); margin: 0 0 16px; letter-spacing: -1.2px;
+    }
+    .kdd-hero-sub {
+      font-size: clamp(15px,1.8vw,18px); color: var(--kdd-muted);
+      line-height: 1.55; max-width: 54ch; margin-bottom: 40px;
+    }
+    .kdd-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .kdd-pill {
+      border: 1px solid var(--kdd-border); border-radius: 100px;
+      padding: 7px 18px; font-size: 14px; color: var(--kdd-muted);
+    }
+    .kdd-pill-dark {
+      background: var(--kdd-white); color: var(--kdd-bg);
+      border-radius: 100px; padding: 7px 18px; font-size: 14px; font-weight: 600;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────────── */
+    .kdd-layout {
+      display: flex; position: relative;
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 clamp(16px,4vw,48px);
+    }
+
+    /* ── SIDEBAR ──────────────────────────────────────────────── */
+    .kdd-sidebar {
+      width: 220px; flex-shrink: 0; position: sticky;
+      top: 64px; height: calc(100vh - 64px);
+      display: flex; align-items: flex-start;
+      padding-top: 80px; padding-left: 8px;
+    }
+    .kdd-sidebar-inner { position: relative; padding-left: 20px; }
+    .kdd-sidebar-line { position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--kdd-border); }
+    .kdd-sidebar-project { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--kdd-muted); margin-bottom: 28px; font-family: 'Pretendard', sans-serif; }
+    .kdd-nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .kdd-nav-item {
+      font-family: 'Pretendard', sans-serif; font-size: 13px; color: #444;
+      cursor: pointer; padding: 8px 0; transition: color 0.3s;
+      position: relative; user-select: none;
+    }
+    .kdd-nav-item:hover { color: #888; }
+    .kdd-nav-item.active { color: var(--kdd-accent); font-weight: 500; }
+    .kdd-nav-dot {
+      position: absolute; left: -24px; top: 50%;
+      transform: translateY(-50%); width: 6px; height: 6px;
+      border-radius: 50%; background: var(--kdd-accent); opacity: 0; transition: opacity 0.3s;
+    }
+    .kdd-nav-item.active .kdd-nav-dot { opacity: 1; }
+
+    /* ── CONTENT ──────────────────────────────────────────────── */
+    .kdd-content { flex: 1; min-width: 0; padding: 0 0 160px 40px; }
+
+    /* ── SECTIONS ─────────────────────────────────────────────── */
+    .kdd-section {
+      padding: clamp(64px,8vw,120px) 0;
+      border-top: 1px solid var(--kdd-border);
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .kdd-section:first-child { border-top: none; }
+    .kdd-section.visible { opacity: 1; transform: translateY(0); }
+
+    .kdd-section-label { font-size: 15px; color: var(--kdd-muted); margin-bottom: 12px; }
+    .kdd-section-title {
+      font-size: clamp(22px,2.8vw,32px); font-weight: 500;
+      color: var(--kdd-white); margin-bottom: 20px;
+      line-height: 1.15; letter-spacing: -0.5px;
+    }
+    .kdd-body-text { font-size: 16px; color: var(--kdd-muted); line-height: 1.65; margin-bottom: 32px; }
+    .kdd-col-heading { font-size: 16px; font-weight: 600; color: var(--kdd-white); margin-bottom: 8px; font-family: 'Overused Grotesk', 'Pretendard', sans-serif; }
+    .kdd-col-body { font-size: 16px; color: var(--kdd-muted); line-height: 1.65; margin-bottom: 16px; }
+    .kdd-hl { font-weight: 600; color: var(--kdd-white); }
+    .kdd-mark { background: rgba(75,59,255,0.09); border-radius: 3px; padding: 1px 4px; color: var(--kdd-white); }
+
+    @media (min-width: 1400px) {
+      .kdd-hero-inner, .kdd-layout { max-width: 1280px; }
+    }
+
+    /* ── STAT CARDS ───────────────────────────────────────────── */
+    .kdd-stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 40px; }
+    .kdd-stat-card { background: var(--kdd-surface); border: 1px solid var(--kdd-border); border-radius: 12px; padding: 24px; }
+    .kdd-stat-card-label { font-size: 13px; color: var(--kdd-accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Pretendard', sans-serif; }
+    .kdd-stat-card-value { font-size: 14px; font-weight: 500; color: var(--kdd-white); line-height: 1.2; font-family: 'Pretendard', sans-serif; }
+
+    /* ── STAT STRIP ───────────────────────────────────────────── */
+    .kdd-stat-strip { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--kdd-border); border-radius: 12px; overflow: hidden; margin-bottom: 48px; }
+    .kdd-stat-cell { padding: 28px 24px; border-right: 1px solid var(--kdd-border); }
+    .kdd-stat-cell:last-child { border-right: none; }
+    .kdd-stat-num { font-family: 'Overused Grotesk', sans-serif; font-size: clamp(28px,4vw,42px); font-weight: 500; color: var(--kdd-white); letter-spacing: -1px; margin-bottom: 6px; }
+    .kdd-stat-desc { font-size: 13px; color: var(--kdd-muted); font-family: 'Pretendard', sans-serif; line-height: 1.5; }
+
+    /* ── TWO-COL ──────────────────────────────────────────────── */
+    .kdd-two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+
+    /* ── PULL QUOTE ───────────────────────────────────────────── */
+    .kdd-pull-quote { border-left: 3px solid var(--kdd-accent); padding: 8px 0 8px 32px; margin: 40px 0; }
+    .kdd-pull-quote p { font-size: clamp(16px,2.2vw,22px); font-weight: 500; line-height: 1.5; color: var(--kdd-white); }
+
+    /* ── IMAGE BLOCK ──────────────────────────────────────────── */
+    .kdd-img-block { border-radius: 12px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--kdd-border); }
+    .kdd-img-block img { width: 100%; display: block; }
+    .kdd-img-cap { padding: 12px 16px 14px; border-top: 1px solid var(--kdd-border); }
+    .kdd-photo-cap-title { font-size: 14px; font-weight: 500; color: var(--kdd-white); font-family: 'Pretendard', sans-serif; margin-bottom: 3px; }
+    .kdd-photo-cap-sub { font-size: 13px; color: var(--kdd-muted); font-family: 'Pretendard', sans-serif; }
+
+    /* ── RESPONSIBILITY TABLE ─────────────────────────────────── */
+    .kdd-resp-table { width: 100%; border: 1px solid var(--kdd-border); border-radius: 12px; overflow: hidden; margin-bottom: 40px; border-collapse: collapse; }
+    .kdd-resp-table th { padding: 14px 20px; font-family: 'Pretendard', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--kdd-muted); background: #F2F1EF; text-align: left; border-bottom: 1px solid var(--kdd-border); }
+    .kdd-resp-table th:first-child { border-right: 1px solid var(--kdd-border); }
+    .kdd-resp-table td { padding: 14px 20px; font-size: 14px; color: var(--kdd-muted); font-family: 'Pretendard', sans-serif; line-height: 1.5; border-bottom: 1px solid var(--kdd-border); vertical-align: top; }
+    .kdd-resp-table td:first-child { border-right: 1px solid var(--kdd-border); color: var(--kdd-white); font-weight: 500; }
+    .kdd-resp-table tr:last-child td { border-bottom: none; }
+
+    /* ── STAKEHOLDER CARDS ────────────────────────────────────── */
+    .kdd-stakeholder-row { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+    .kdd-stakeholder-card { background: var(--kdd-surface); border: 1px solid var(--kdd-border); border-radius: 12px; padding: 24px 28px; display: flex; gap: 24px; align-items: flex-start; }
+    .kdd-stakeholder-tag { font-family: 'Pretendard', sans-serif; font-size: 13px; color: var(--kdd-accent); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; padding-top: 2px; width: 180px; flex-shrink: 0; }
+    .kdd-stakeholder-body { flex: 1; }
+
+    /* ── STEP GRID ────────────────────────────────────────────── */
+    .kdd-step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
+
+    /* ── INSIGHT BOX ──────────────────────────────────────────── */
+    .kdd-insight {
+      background: var(--kdd-surface); border: 1px solid var(--kdd-border);
+      border-radius: 12px; padding: 24px 28px; margin-bottom: 40px;
+    }
+    .kdd-insight-tag { font-family: 'Pretendard', sans-serif; font-size: 13px; color: var(--kdd-accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .kdd-footer {
+      border-top: 1px solid var(--kdd-border);
+      padding: 32px clamp(24px,6vw,80px);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--kdd-muted); font-family: 'Pretendard', sans-serif; letter-spacing: 0.02em;
+    }
+    .kdd-footer a { color: var(--kdd-muted); text-decoration: none; transition: color 0.2s; }
+    .kdd-footer a:hover { color: var(--kdd-white); }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 840px) {
+      .kdd-sidebar { display: none; }
+      .kdd-content { padding-left: 0; }
+      .kdd-stat-row { grid-template-columns: 1fr 1fr; }
+      .kdd-two { grid-template-columns: 1fr; gap: 24px; }
+      .kdd-step-grid { grid-template-columns: 1fr; }
+      .kdd-stat-strip { grid-template-columns: 1fr; }
+      .kdd-stat-cell { border-right: none; border-bottom: 1px solid var(--kdd-border); }
+      .kdd-stakeholder-card { flex-direction: column; gap: 8px; }
+    }
+    @media (max-width: 520px) {
+      .kdd-stat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  <style>
+    #lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; cursor:zoom-out; }
+    #lightbox.open { display:flex; }
+    #lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px; box-shadow:0 24px 80px rgba(0,0,0,0.5); }
+    #lightbox-close { position:fixed; top:20px; right:24px; color:#fff; font-size:28px; cursor:pointer; line-height:1; opacity:0.7; }
+    #lightbox-close:hover { opacity:1; }
+    .kdd-img-block img, .kdd-step-grid img { cursor:zoom-in; }
+  </style>
+</head>
+<body>
+
+<div id="cs-progress"></div>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="font-weight:500;font-size:13.5px;color:var(--kdd-muted);display:inline-flex;align-items:center;gap:6px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+      Back to work
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#contact" style="color:#E8581A;border-color:rgba(232,88,26,0.25);">Available ✦</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="kdd-hero">
+  <div class="kdd-hero-inner">
+    <div class="kdd-hero-label">Case study · Vancouver Balloons AI Builder</div>
+    <h1 class="kdd-hero-title">Designing the system.<br>Directing the build.</h1>
+    <p class="kdd-hero-sub">I ran the research, mapped the full decision tree, created every asset, and used AI to execute it. Not a shortcut. A workflow.</p>
+    <div class="kdd-pills">
+      <span class="kdd-pill">Live Product</span>
+      <span class="kdd-pill">AI-Assisted Build</span>
+      <span class="kdd-pill">Product Design</span>
+      <span class="kdd-pill">React · Tailwind</span>
+      <span class="kdd-pill">2025–26</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="kdd-layout">
+  <aside class="kdd-sidebar">
+    <div class="kdd-sidebar-inner">
+      <div class="kdd-sidebar-line"></div>
+      <div class="kdd-sidebar-project">Balloons</div>
+      <ul class="kdd-nav-list" id="cs-nav">
+        <li class="kdd-nav-item" data-target="vb-overview"><span class="kdd-nav-dot"></span>01 Overview</li>
+        <li class="kdd-nav-item" data-target="vb-research"><span class="kdd-nav-dot"></span>02 Research</li>
+        <li class="kdd-nav-item" data-target="vb-process"><span class="kdd-nav-dot"></span>03 Process</li>
+        <li class="kdd-nav-item" data-target="vb-build"><span class="kdd-nav-dot"></span>04 Build</li>
+        <li class="kdd-nav-item" data-target="vb-qa"><span class="kdd-nav-dot"></span>05 QA</li>
+        <li class="kdd-nav-item" data-target="vb-outcome"><span class="kdd-nav-dot"></span>06 Outcome</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="kdd-content">
+
+    <!-- STAT BAR -->
+    <div class="kdd-stat-row" style="margin-top:clamp(48px,6vw,80px);">
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Role</div><div class="kdd-stat-card-value">Designer + Director</div></div>
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Timeframe</div><div class="kdd-stat-card-value">2025–26</div></div>
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Stack</div><div class="kdd-stat-card-value">Vite · React · Tailwind · Claude Code</div></div>
+      <div class="kdd-stat-card"><div class="kdd-stat-card-label">Status</div><div class="kdd-stat-card-value" style="color:var(--kdd-accent);">Live Product ↗</div></div>
+    </div>
+
+    <!-- 01 OVERVIEW -->
+    <section class="kdd-section" data-section="overview" id="vb-overview">
+      <div class="kdd-section-label">01 · Overview</div>
+      <h2 class="kdd-section-title">I designed the system.<br>AI executed it.</h2>
+
+      <p class="kdd-body-text">Vancouver Balloons was running on manual quotes, long email chains, and staff time spent explaining options customers couldn't visualize. The result is a 6-step configurator where customers can build, preview, and price a balloon arch on their own without any back-and-forth.</p>
+
+      <p class="kdd-body-text">Every product decision came from research I ran myself: the flow logic, business rules, and visual system. I created all the design assets and flow documentation first, then used Claude Code to execute it in small, testable steps, reviewing every output against my original spec.</p>
+
+      <div class="kdd-stat-strip">
+        <div class="kdd-stat-cell">
+          <div class="kdd-stat-num">6</div>
+          <div class="kdd-stat-desc">interviewed — owner, 3 admin staff, 2 regular clients</div>
+        </div>
+        <div class="kdd-stat-cell">
+          <div class="kdd-stat-num">8</div>
+          <div class="kdd-stat-desc">steps fully mapped before a single prompt was written</div>
+        </div>
+        <div class="kdd-stat-cell">
+          <div class="kdd-stat-num">2</div>
+          <div class="kdd-stat-desc">rendering bugs caught in QA that AI missed</div>
+        </div>
+      </div>
+
+      <p class="kdd-col-heading" style="margin-bottom:16px;">Where I end and AI begins</p>
+      <table class="kdd-resp-table">
+        <thead>
+          <tr>
+            <th>My work</th>
+            <th>AI executed, to my spec</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Stakeholder interviews and synthesis</td>
+            <td>React component code</td>
+          </tr>
+          <tr>
+            <td>Full 8-step product flow and decision tree</td>
+            <td>SVG gradient math</td>
+          </tr>
+          <tr>
+            <td>Business rules (pricing, lead times, venue logic)</td>
+            <td>Boilerplate file structure and wiring</td>
+          </tr>
+          <tr>
+            <td>All visual assets: flow diagrams, arch SVG, UI design</td>
+            <td>First-pass code drafts, revised to my spec</td>
+          </tr>
+          <tr>
+            <td>QA: reviewing output against design intent, not just whether it ran</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="kdd-pull-quote">
+        <p>I didn't prompt "build me a balloon configurator." I designed the whole system first, then broke it into instructions small enough to review properly.</p>
+      </div>
+    </section>
+
+    <!-- 02 RESEARCH -->
+    <section class="kdd-section" data-section="research" id="vb-research">
+      <div class="kdd-section-label">02 · Research</div>
+      <h2 class="kdd-section-title">Six interviews.<br>Every decision traced back.</h2>
+
+      <p class="kdd-body-text">I talked to six people before opening Figma: the owner, three admin staff, and two regular clients. What came out wasn't a list of feature requests. It was a set of real constraints that shaped how the whole system had to work.</p>
+
+      <div class="kdd-stakeholder-row">
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Business Owner</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-heading" style="font-size:15px;margin-bottom:6px;">Protect pricing from competitors</p>
+            <p class="kdd-col-body" style="margin-bottom:0;">He was worried about competitors scraping his quote structure. Pricing needed to be easy for real customers to get but not fully public. That one concern ended up shaping more downstream decisions than anything else. The answer was an email gate: not a full account wall (too much friction), not fully open (too exposed). Just enough protection without turning people away.</p>
+          </div>
+        </div>
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Admin Staff<br>×3</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-heading" style="font-size:15px;margin-bottom:6px;">Fewer manual quotes to handle</p>
+            <p class="kdd-col-body" style="margin-bottom:0;">All three were doing every custom quote by hand, going back and forth over email explaining sizes, colors, lead times. They didn't want a new system to babysit. They wanted the repetitive work to stop. So every friction decision in the product came back to that: does this make things easier for them, or does it just move the problem somewhere else?</p>
+          </div>
+        </div>
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Regular Clients<br>×2</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-heading" style="font-size:15px;margin-bottom:6px;">Figure out options without making a call</p>
+            <p class="kdd-col-body" style="margin-bottom:0;">Both had ordered before and said the same thing: they had no idea what sizes existed, what colors were available, or what it would cost until they emailed and waited. Talking to them confirmed the need for something self-serve with a real preview and visible price ranges, not just a contact form.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="kdd-insight">
+        <div class="kdd-insight-tag">Design Decision</div>
+        <p class="kdd-col-body" style="margin-bottom:0;">The email gate sits between two options that both had problems: hide pricing completely (customers bounce before they commit) or show it publicly (competitors scrape it). The gate keeps serious customers moving while protecting the business. It came directly from what the owner told me in the interview.</p>
+      </div>
+    </section>
+
+    <!-- 03 PROCESS -->
+    <section class="kdd-section" data-section="process" id="vb-process">
+      <div class="kdd-section-label">03 · Process</div>
+      <h2 class="kdd-section-title">Every branch mapped<br>before any code.</h2>
+
+      <p class="kdd-body-text">Before any build started, I mapped the full decision tree in Figma. The configurator runs <span class="kdd-mark">8 steps</span>: Balloon Type (Organic / Helium / Hybrid), Style, Size, Color Structure, Number of Colors, Color Selection, Final Information, and Confirm. Every branch, every business rule, every conditional. <span class="kdd-mark">The flow map was the real product spec.</span> The code came after.</p>
+
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/vb/flow.svg" alt="Full 8-step flow map" style="width:100%;display:block;" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Full Decision Tree · 8-Step Flow</div>
+          <div class="kdd-photo-cap-sub">Every branch mapped before a single prompt was written — click to enlarge</div>
+        </div>
+      </div>
+      <div class="kdd-img-block" style="background:#F8F8F6;">
+        <img src="src/assets/vb/Final-Product-List.svg" alt="Final product list" style="width:100%;display:block;" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Final Product List · All Components</div>
+          <div class="kdd-photo-cap-sub">Full component-to-flow mapping — click to enlarge</div>
+        </div>
+      </div>
+
+      <p class="kdd-col-heading" style="margin-bottom:16px;margin-top:40px;">The product at each decision point</p>
+      <p class="kdd-body-text">Each step branches based on what the customer chose before. The balloon type picked in Step 1 shapes every screen that follows. These are the real screens from the organic MVP, built from assets I designed and fed into Claude Code.</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/vb/Step2.png" alt="Step 2 — Select Style" style="width:100%;display:block;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Step 2 · Style</div>
+            <div class="kdd-photo-cap-sub">Solid, Spiral, Cluster, or Random — each leads to a different color structure flow</div>
+          </div>
+        </div>
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/vb/arch selection.PNG" alt="Step 3 — Select Arch Size" style="width:100%;display:block;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Step 3 · Size</div>
+            <div class="kdd-photo-cap-sub">Skinny Door, Standard Full, Supreme Full — price range shown per size</div>
+          </div>
+        </div>
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/vb/arch number selection.PNG" alt="Step 5 — Choose Number of Colors" style="width:100%;display:block;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Step 5 · Number of Colors</div>
+            <div class="kdd-photo-cap-sub">2–5 colors — arch preview updates in the left panel as you choose</div>
+          </div>
+        </div>
+        <div class="kdd-img-block" style="margin-bottom:0;">
+          <img src="src/assets/vb/color-selection.PNG" alt="Step 6 — Color Selection" style="width:100%;display:block;" />
+          <div class="kdd-img-cap">
+            <div class="kdd-photo-cap-title">Step 6 · Color Selection</div>
+            <div class="kdd-photo-cap-sub">Primary, Secondary, Accent picker — arch preview recolors as you pick</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="kdd-body-text" style="margin-top:8px;">Step 4 is where the flow branches most. Color Structure has four options: Solid, Spiral, Cluster, Random. Each one leads to a different Number of Colors screen and a different picker experience in Step 6. Solid skips straight to one color field. The others open a Primary, Secondary, Accent picker. I had all of this mapped before writing a single prompt.</p>
+
+      <div class="kdd-pull-quote">
+        <p>Early on I had pricing locked behind a full account signup. I changed it. That level of friction was exactly what the staff were trying to get rid of, and it would have cost more conversions than it was worth.</p>
+      </div>
+    </section>
+
+    <!-- 04 BUILD -->
+    <section class="kdd-section" data-section="build" id="vb-build">
+      <div class="kdd-section-label">04 · Build</div>
+      <h2 class="kdd-section-title">Small prompts,<br>not one big wish.</h2>
+
+      <p class="kdd-body-text">Once the map was done, I moved into Claude Code one component at a time, synced across two machines via Git. Each prompt covered one thing. I reviewed every output against my flow map, not just whether the code ran but whether it did what I actually designed.</p>
+
+      <!-- Workflow step 1 -->
+      <p class="kdd-col-heading" style="margin-bottom:6px;">Step 1 · Scope one thing at a time</p>
+      <p class="kdd-body-text">This prompt adds an <span class="kdd-hl">archSize</span> prop to the arch component and maps three viewBox values to it. Nothing else. Keeping scope that tight means the output is easy to check and easy to fix if something's off.</p>
+
+      <div class="kdd-img-block" style="background:#0D0D0D;">
+        <img src="src/assets/vb/prompt1.svg" alt="Prompt 1 — archSize prop" style="width:100%;display:block;" />
+        <div class="kdd-img-cap" style="background:var(--kdd-surface);">
+          <div class="kdd-photo-cap-title">Prompt 1 · Add archSize prop + viewBox mapping</div>
+          <div class="kdd-photo-cap-sub">Single responsibility: define the prop, map three size cases to their viewBox values, nothing else touched</div>
+        </div>
+      </div>
+
+      <!-- Connector -->
+      <div style="display:flex;align-items:center;gap:16px;margin:32px 0;">
+        <div style="flex:1;height:1px;background:var(--kdd-border);"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--kdd-muted);letter-spacing:0.08em;white-space:nowrap;">REVIEW OUTPUT → CONTINUE</span>
+        <div style="flex:1;height:1px;background:var(--kdd-border);"></div>
+      </div>
+
+      <!-- Workflow step 2 -->
+      <p class="kdd-col-heading" style="margin-bottom:6px;">Step 2 · Wire it through the rest of the app</p>
+      <p class="kdd-body-text">Only after checking Step 1 does the next prompt go out. This one passes the new prop from the size screen through every step that shows the arch preview, so picking a size on Step 3 updates the preview on Steps 4, 5, and 6 consistently. That's how I kept things from quietly breaking further down.</p>
+
+      <div class="kdd-img-block" style="background:#0D0D0D;">
+        <img src="src/assets/vb/prompt2.svg" alt="Prompt 2 — wire archSize through app" style="width:100%;display:block;" />
+        <div class="kdd-img-cap" style="background:var(--kdd-surface);">
+          <div class="kdd-photo-cap-title">Prompt 2 · Wire archSize across Steps 3–6</div>
+          <div class="kdd-photo-cap-sub">Builds on Step 1 only after review — threads the prop through the remaining steps so the preview updates live</div>
+        </div>
+      </div>
+
+      <div class="kdd-two" style="margin-top:40px;">
+        <div>
+          <p class="kdd-col-heading">What I made</p>
+          <p class="kdd-col-body">Every asset in this product came from me: the flow docs, the arch SVG with per-balloon gradients and highlights, the color system, the UI layout. AI didn't generate any of it from scratch. It built against what I already had.</p>
+        </div>
+        <div>
+          <p class="kdd-col-heading">What I directed</p>
+          <p class="kdd-col-body">At each step: I wrote the instruction, fed in the asset, reviewed the output against my spec, fixed what was wrong, and moved on. <span class="kdd-mark">The decisions were always mine.</span> AI handled the execution.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 05 QA -->
+    <section class="kdd-section" data-section="qa" id="vb-qa">
+      <div class="kdd-section-label">05 · QA</div>
+      <h2 class="kdd-section-title">The arch clipped.<br>The code still "worked."</h2>
+
+      <p class="kdd-body-text">Going through the arch preview step by step, I caught a rendering issue: the balloon arch was being clipped inside the left panel container. The code ran fine. The bug only showed up when you actually looked at it the way a customer would, which is something AI won't do on its own.</p>
+
+      <div class="kdd-two" style="margin-bottom:32px;">
+        <div>
+          <p class="kdd-col-heading">Bug 1 · Leftover elements</p>
+          <p class="kdd-col-body">Unused highlight-gradient elements from an earlier pass were still sitting in the component. Instead of working around them, I removed them entirely: the highlight circle array and all the gradient definitions got stripped out.</p>
+        </div>
+        <div>
+          <p class="kdd-col-heading">Bug 2 · Container clipping</p>
+          <p class="kdd-col-body">A fixed-height container was cutting off the SVG instead of letting it size naturally. The fix was setting <span class="kdd-hl">overflow: visible</span> consistently across every step that uses the arch preview, not just the one where I first spotted it.</p>
+        </div>
+      </div>
+
+      <div class="kdd-img-block">
+        <img src="src/assets/vb/3 color selection.PNG" alt="Step 6 — Select Colors" style="width:100%;display:block;" />
+        <div class="kdd-img-cap">
+          <div class="kdd-photo-cap-title">Step 6 · Select Colors — After QA</div>
+          <div class="kdd-photo-cap-sub">Primary, Secondary, Accent picker with live arch preview — arch rendering corrected and consistent across all steps</div>
+        </div>
+      </div>
+
+      <div class="kdd-insight" style="margin-top:32px;">
+        <div class="kdd-insight-tag">The color picker layout</div>
+        <p class="kdd-col-body" style="margin-bottom:0;">The color selection screen went through a few layout iterations before it felt right. I adjusted the balance between the arch preview and the controls, and made sure Primary reads first in the swatch hierarchy. Small calls, but they're the difference between something that feels designed and something that feels put together.</p>
+      </div>
+
+      <div class="kdd-pull-quote">
+        <p>AI runs the code. I check whether it actually matches what a customer would see. That review step is where most of the real work happens.</p>
+      </div>
+    </section>
+
+    <!-- 06 OUTCOME -->
+    <section class="kdd-section" data-section="outcome" id="vb-outcome">
+      <div class="kdd-section-label">06 · Outcome</div>
+      <h2 class="kdd-section-title">A shipped product that<br>replaced manual quotes.</h2>
+
+      <p class="kdd-body-text">The configurator is <span class="kdd-mark">deployed and in use internally</span>. Customers can build, preview, and price a balloon arch on their own from start to finish. The owner's pricing is protected. Staff handle fewer manual requests. Customers get answers they used to have to wait for.</p>
+
+      <p class="kdd-body-text">The arch preview, <span class="kdd-hl">RoundArchSVG.jsx</span>, started as a visual concept I sketched out and turned into a spec: balloon positions computed along the arch curve, per-balloon radial gradients, specular highlights, and live recoloring as the customer picks their palette. I designed it, documented it, and directed AI to build it step by step.</p>
+
+      <div class="kdd-insight" style="margin-bottom:40px;">
+        <div class="kdd-insight-tag">Current status</div>
+        <p class="kdd-col-body" style="margin-bottom:8px;">The configurator is live for the client's internal use. The MVP covers the full organic balloon category — customers can build, price, and submit a quote entirely on their own.</p>
+        <p class="kdd-col-body" style="margin-bottom:0;">Helium balloons are next. The product logic is more complex, with different size rules and floating time variables, so it's being built as a separate phase. The goal is a single unified configurator that handles both organic and helium from one flow.</p>
+      </div>
+
+      <p class="kdd-col-heading" style="margin-bottom:20px;">What this shows</p>
+      <div class="kdd-stakeholder-row">
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Research</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-body" style="margin-bottom:0;">I ran the interviews and turned what I heard into actual product logic. The pricing gate, the email capture, the lead time handling: each one came from something specific a person told me, not from assumptions.</p>
+          </div>
+        </div>
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Systems thinking</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-body" style="margin-bottom:0;">The full 8-step decision tree was done <span class="kdd-mark">before I wrote a single prompt</span>. I don't start building until I know how the whole thing fits together. That's what keeps AI from making product decisions on my behalf.</p>
+          </div>
+        </div>
+        <div class="kdd-stakeholder-card">
+          <div class="kdd-stakeholder-tag">Working with AI</div>
+          <div class="kdd-stakeholder-body">
+            <p class="kdd-col-body" style="margin-bottom:0;">Getting good output from AI means coming in prepared: assets ready, spec written, each instruction scoped to one reviewable thing. And then actually reviewing it. That's the part that takes skill, and it's the part I do.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<footer class="kdd-footer" style="justify-content:center;">
+  <span>© 2026 Sebin Lee</span>
+</footer>
+
+<script>
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.kdd-img-block img, video').forEach(el => {
+    if (el.tagName === 'IMG') {
+      el.addEventListener('click', () => {
+        lightboxImg.src = el.src;
+        lightboxImg.alt = el.alt;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  const progress = document.getElementById('cs-progress');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    if (progress) progress.style.width = pct + '%';
+  }, { passive: true });
+
+  const sections = document.querySelectorAll('[data-section]');
+  const sectionIO = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  sections.forEach(s => sectionIO.observe(s));
+
+  const allNavItems = document.querySelectorAll('.kdd-nav-item');
+  function updateActiveNav() {
+    const threshold = window.innerHeight * 0.3;
+    let current = null;
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top <= threshold) current = s;
+    });
+    if (current) {
+      allNavItems.forEach(n => n.classList.toggle('active', n.dataset.target === 'vb-' + current.dataset.section));
+    }
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  allNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
